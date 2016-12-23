@@ -1,0 +1,40 @@
+logging:
+  level:
+    org.springframework.security: DEBUG
+security:
+  sessions: ALWAYS
+server:
+    port: 9006
+zuul:
+  routes:
+    docs:
+      url: http://localhost:8081
+      sensitive-headers:
+    contacts: 
+      url: http://localhost:8082
+      sensitive-headers:
+    messages:
+      url: http://localhost:8083
+      sensitive-headers:
+    resource:
+      url: http://localhost:9000
+      sensitive-headers:
+      
+spring:
+    datasource:
+        url: jdbc:mysql://localhost:3306/nvaultdb
+        username : root
+        password : root
+        testWhileIdle : true
+        validationQuery : SELECT 1
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+            naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+            dialect : org.hibernate.dialect.MySQL5Dialect 
+    redis:
+         host: localhost
+         port: 6379
+     
+  

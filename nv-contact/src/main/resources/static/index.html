@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html ng-app="fileShareApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Nisum Drop Box App</title>
+  <base href="/contacts/" />
+  <!-- Bootstrap Core CSS -->
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/ShareAppStyleSheet.css" rel="stylesheet">
+  <link href="css/agency.css" rel="stylesheet">
+  <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Open+Sans:600'>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="css/gateway-assets.css" rel="stylesheet">
+  
+  <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="lib/css/textAngular.css">
+ <link rel="stylesheet" href="lib/css/spectrum.min.css" />
+ <link  rel="stylesheet" href="lib/css/font-awesome.min.css" />
+ <link rel="stylesheet"  href="lib/css/textAngularCustom.css" />
+
+<link href="lib/angular/css/angular-timezone-selector.css" rel="stylesheet">
+<link href="lib/angular-material-design/css/angular-material.min.css" rel="stylesheet">
+<link rel="stylesheet" href="lib/utility/css/select2.css">
+<link rel="stylesheet" href="lib/utility/css/selectize.default.css">
+<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="lib/angular/css/datetimepicker.css" rel="stylesheet">
+<link rel="stylesheet" href="lib/angular/css/ng-grid.css" />
+<link href="lib/utility/css/select.css" rel="stylesheet">
+<link href="lib/angular/css/angular-block-ui.min.css" rel="stylesheet">
+<link href="lib/angular-xeditable/css/xeditable.css" rel="stylesheet">
+<link href="lib/angular/css/ng-notify.min.css"></link>
+<link href="lib/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="lib/angular/css/ng-tags-input.min.css">
+<link href="lib/bootstrap/font/font-awesome.css" rel="stylesheet">
+<link href="lib/bootstrap/font/google_font.css" rel="stylesheet">
+<link href="lib/angular/css/animation.css" rel="stylesheet">
+<link href="lib/angular-ui-grid/ui-grid.min.css" rel="stylesheet">
+
+<script src="lib/utility/js/jquery-2.2.0.min.js"></script>
+<script src="lib/utility/js/lodash-4.16.4.min.js"></script>
+<script src="lib/utility/js/moment-2.11.1.min.js"></script>
+<script src="lib/utility/js/moment-timezone-with-data-0.5.0.min.js"></script>
+
+<script src="lib/angular/js/angular.min.js"></script>
+
+<script src="lib/angular/js/angular-animate.js"></script>
+<script src="lib/utility/js/jstz-1.0.6.min.js"></script>
+<script src="lib/angular/js/angular-timezone-selector.js"></script>
+
+<script src="lib/angular/js/angular-file-upload-shim.min.js"></script>
+<script src="lib/angular/js/angular-file-upload.js"></script>
+<script src="lib/angular/js/angular-ui-router.min.js"></script>
+<script src="lib/angular/js/angular-strap.js"></script>
+<script src="lib/angular/js/angular-strap.tpl.js"></script>
+<script src="lib/angular/js/angular-block-ui.min.js"></script>
+
+<script src="lib/utility/js/select.js"></script>
+<script src="lib/angular/js/ng-grid-2.0.14.min.js"></script>
+<script src="lib/utility/js/underscore-min.js"></script>
+<script src="lib/utility/js/masks.js"></script>
+
+<script src="lib/bootstrap/js/bootstrap.js"></script>
+
+<script src="lib/angular/js/datetimepicker.js"></script>
+<script src="lib/angular-xeditable/js/xeditable.min.js"></script>
+<script src="lib/angular-xeditable/js/xeditable.js"></script>
+<script src="lib/angular/js/ng-grid-2.0.14.debug.js"></script>
+
+<script src="lib/angular/js/angular-route.js"></script>
+<script src="lib/angular-material-design/js/angular-aria.min.js"></script>
+<script src="lib/angular-material-design/js/angular-material.min.js"></script>
+
+<script src="lib/angular/js/ng-notify.min.js"></script>
+
+<script src="lib/angular/js/highcharts-ng.js"></script>
+<script src="lib/angular/js/highcharts-ng.min.js"></script>
+<script src="lib/angular/js/highcharts.js"></script>
+<script src= "lib/utility/js/angular-fcsa-number.js"></script>
+<script src="lib/angular-ui-grid/ui-grid.min.js"></script>
+<script src="lib/utility/js/chosen.jquery-1.4.2.js"></script>
+<script type="text/javascript" src="http://platform.linkedin.com/in.js">
+
+<script src="lib/textAngular/spectrum.min.js"></script>
+<script src="lib/textAngular/angular-spectrum-colorpicker.min.js"></script>
+<script src="lib/textAngular/textAngular-dropdownToggle.js"></script>
+<script src="lib/textAngular/textAngular-rangy.min.js"></script>
+<script src='lib/textAngular/textAngular-sanitize.min.js'></script>
+<script src="lib/textAngular/textAngularSetup.js"></script>
+<script src='lib/textAngular/textAngular.js'></script>
+<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  
+  <style type="text/css">
+	[ng\:cloak], [ng-cloak], .ng-cloak {
+		display: none !important;
+	}
+  </style>
+<script src="js/angular-bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/FileShare.js"></script>
+<script src="js/register/user.service.js" type="text/javascript"></script>
+<script src="js/register/flash.service.js" type="text/javascript"></script>
+</head>
+<body>
+	<div>
+		<table style="font-family:Arial">
+			<tr>
+				<td colspan = 2 class="header">
+					<h1>MY Contacts</h1>
+				</td>
+
+			</tr>
+			<tr>
+				<td class="leftMenu">
+				<a href="view">View</a>
+				 <br></br> 
+				 <a href="register">Create</a>
+				 </td>
+				<td class="MainContent">
+				<ng-view></ng-view>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
