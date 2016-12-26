@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +40,13 @@ public class SmtpMailController {
 		System.out.println(body);
 		
 		 //JSONParser parser = new JSONParser(); JSONObject json = (JSONObject) parser.parse(stringToParse);
-		JSONObject jsonObj = new JSONObject(body);
+		JSONObject jsonObj=null;
+		try {
+			jsonObj = new JSONObject(body);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		try{
 			
