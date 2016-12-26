@@ -50,11 +50,11 @@
    			<artifactId>mail</artifactId>
    			<version>1.4.7</version>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20090211</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
