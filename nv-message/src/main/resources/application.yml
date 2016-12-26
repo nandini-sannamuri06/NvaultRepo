@@ -8,7 +8,7 @@ spring:
     mail:
       host: smtp.gmail.com
       username: ppadala@nisum.com
-      password: 29nov2016
+      password: xxxxxxxx
       properties:
                     mail:
                       smtp:
