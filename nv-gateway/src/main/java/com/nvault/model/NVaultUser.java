@@ -1,6 +1,6 @@
 package com.nvault.model;
 
-
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,34 +15,43 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
 @Table(name = "user")
-public class User {
+@JsonDeserialize(as = NVaultUser.class)
+public class NVaultUser implements UserDetails {
+
+	/**
+	 * Serialization ID
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public NVaultUser() {
+	}
 
 	@Id
 	@GeneratedValue
 	private int id;
-	
-	@Column(name="username")
+
+	@Column(name = "username")
 	private String username;
-	
+
 	@Column
 	private String password;
 
-	@Column(name="mail")
+	@Column(name = "mail")
 	private String mail;
-	
+
 	@NotNull
 	private boolean accountNonExpired = true;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "userRole", joinColumns = @JoinColumn(name = "accountId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "role_id"))
 	public Set<Role> roles;
-
-	public User() {
-
-	}
 
 	public int getId() {
 		return id;
@@ -51,8 +60,6 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	
 
 	public String getUsername() {
 		return username;
@@ -98,5 +105,25 @@ public class User {
 		this.accountNonExpired = accountNonExpired;
 	}
 
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

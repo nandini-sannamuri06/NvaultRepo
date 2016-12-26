@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.nvault.model.User;
+import com.nvault.model.NVaultUser;
 import com.nvault.repository.UserRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,26 +38,25 @@ public class UserServiceImplTest {
 
 	@Test
 	public void testSave() throws Exception {
-		User user = new User();
+		NVaultUser user = new NVaultUser();
 		user.setId(25);
 		user.setUsername("xxxx");
 		user.setMail("mail");
 		Mockito.when(passwordEncoder.encode(Matchers.any(CharSequence.class))).thenReturn("value");
 		Mockito.when(userRepository.save(user)).thenReturn(user);
-		User userSave = userServiceImpl.saveUser(user);
+		NVaultUser userSave = userServiceImpl.saveUser(user);
 		Assert.assertEquals(Integer.valueOf(userSave.getId()), Integer.valueOf(25));
 		Assert.assertEquals(userSave.getUsername(), "xxxx");
 	}
 
 	@Test
 	public void testFindByUserName() {
-		User user = new User();
+		NVaultUser user = new NVaultUser();
 		user.setUsername("nandini");
 		user.setPassword("nandini");
 		user.setAccountNonExpired(true);
-
 		Mockito.when(userRepository.findByUsername(Matchers.anyString())).thenReturn(user);
-		User userDtls = userServiceImpl.findByUserName("nVault");
+		NVaultUser userDtls = userServiceImpl.findByUserName("nVault");
 
 		Assert.assertEquals(user.getUsername(), userDtls.getUsername());
 	}

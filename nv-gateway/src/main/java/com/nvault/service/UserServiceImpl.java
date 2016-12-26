@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.nvault.model.User;
+import com.nvault.model.NVaultUser;
 import com.nvault.repository.UserRepository;
 
 @Service
@@ -18,33 +18,33 @@ public class UserServiceImpl implements UserService {
 	private PasswordEncoder passwordEncoder;
 	
 	@Override
-	public User findByUserName(String userName) {
+	public NVaultUser findByUserName(String userName) {
 		return userRepository.findByUsername(userName);
 	}
 	
 	@Override
-	public User findById(int id) {
+	public NVaultUser findById(int id) {
 		
 		return userRepository.findOne(id);
 	}
 
 	@Override
-	public User findByName(String name) {
+	public NVaultUser findByName(String name) {
 		
 		return null;
 	}
 
 	@Override
-	public User saveUser(User user) {
+	public NVaultUser saveUser(NVaultUser user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		User saveduser = userRepository.save(user);
+		NVaultUser saveduser = userRepository.save(user);
 		
 		return saveduser;
 		
 	}
 
 	@Override
-	public User updateUser(User user) {
+	public NVaultUser updateUser(NVaultUser user) {
 		
 		return null;
 	}
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> findAllUsers() {
+	public List<NVaultUser> findAllUsers() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nvault.model.User;
+import com.nvault.model.NVaultUser;
 import com.nvault.service.UserService;
 
 @RestController
@@ -22,16 +22,16 @@ public class UserRegisterController {
 	UserService userService;
 	
 	
-	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<User> createuser(@RequestBody User user) throws Exception{
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<NVaultUser> createuser(@RequestBody NVaultUser user) throws Exception{
 		if (userService.findById(user.getId()) != null) {
-			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<NVaultUser>(HttpStatus.BAD_REQUEST);
 		} else {
-			User createdEmployee = userService.saveUser(user);
+			NVaultUser createdEmployee = userService.saveUser(user);
 			if (createdEmployee != null) {
-				return new ResponseEntity<User>(createdEmployee, HttpStatus.CREATED);
+				return new ResponseEntity<NVaultUser>(createdEmployee, HttpStatus.CREATED);
 			} else {
-				return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<NVaultUser>(HttpStatus.BAD_REQUEST);
 			}
 		}
 	}
