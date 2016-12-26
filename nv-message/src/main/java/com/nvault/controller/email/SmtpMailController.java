@@ -33,13 +33,12 @@ public class SmtpMailController {
 		//return "success";
 	//}
 
-	@RequestMapping(value="/sendmail", method=RequestMethod.POST)
+	/*@RequestMapping(value="/sendmail", method=RequestMethod.POST)
 	public String sendMail(@RequestBody String body){
 		
 		
 		System.out.println(body);
-		
-		 //JSONParser parser = new JSONParser(); JSONObject json = (JSONObject) parser.parse(stringToParse);
+
 		JSONObject jsonObj=null;
 		try {
 			jsonObj = new JSONObject(body);
@@ -62,6 +61,31 @@ public class SmtpMailController {
 		
 		System.out.println(body);
 		return body;
+	}*/
+	
+	
+	@RequestMapping(value="/sendmail", method=RequestMethod.POST)
+	public String sendMail(@RequestBody UserEmail userEmail){
+		
+		
+		System.out.println(userEmail);
+		
+		 
+		
+		try{
+			
+			String to = userEmail.getTo();
+			String subject =userEmail.getSubject();
+			String text= userEmail.getBody();
+			
+			smtpMailSender.send(to, subject, text);
+				
+			}catch(Exception ex){
+				return ex.getMessage();
+			}
+		
+		System.out.println(userEmail);
+		return "true";
 	}
 	
 }
