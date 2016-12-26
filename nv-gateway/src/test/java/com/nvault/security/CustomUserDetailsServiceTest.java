@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.nvault.model.Role;
-import com.nvault.model.User;
+import com.nvault.model.NVaultUser;
 import com.nvault.service.UserService;
 
 
@@ -50,7 +50,7 @@ public class CustomUserDetailsServiceTest {
 	
 	@Test
 	public void testLoadByUserName(){
-		User user = new User();
+		NVaultUser user = new NVaultUser();
 		user.setUsername("nandini");
 		user.setPassword("nandini");
 		user.setAccountNonExpired(true);
