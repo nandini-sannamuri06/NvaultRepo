@@ -25,9 +25,7 @@ public class MessageApplication {
 			http
 				.httpBasic().and()
 				.authorizeRequests()
-					.antMatchers("/index.html", "/").permitAll()
-					.anyRequest().hasRole("USER");
-			// @formatter:on
+					.anyRequest().permitAll();
 		}
 	}
 }
