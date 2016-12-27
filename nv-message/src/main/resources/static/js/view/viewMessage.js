@@ -17,7 +17,7 @@ function getMessagesCtrl($scope, $http, $modal, RowEditor, uiGridConstants) {
 		enableSorting : true,
 		enableFiltering : true,
 		enableGridMenu : true,
-//		rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
+	rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
 	};
 
 	vm.serviceGrid.columnDefs = [ {
@@ -84,7 +84,7 @@ function RowEditor($http, $rootScope, $modal) {
 
 	function editRow(grid, row) {
 		$modal.open({
-			templateUrl : 'service-edit.html',
+			templateUrl : 'manageMessages.html',
 			controller : [ '$http', '$modalInstance', 'grid', 'row', RowEditCtrl ],
 			controllerAs : 'vm',
 			resolve : {

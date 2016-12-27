@@ -24,12 +24,6 @@ public class MessageServiceImpl implements MessageService {
 		return messageRepository.findAll();
 	}
 
-	@Override
-	public Message getMessageById(int id) {
-		
-		Message message = messageRepository.findOne(id);
-		
-		return message;
-	}
+	
 
 }

@@ -1,0 +1,27 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">Manage Messages</h3>
+    </div>
+    <div class="modal-body">
+        Recipient : <input class="input" style="border:none !important;" type="text" disabled value="{{vm.entity.recipient}}" />
+        <br>
+        <hr>
+        <br> Body : <input class="input" style="border:none !important;" type="text" disabled ng-model="vm.entity.body" />
+        <hr>
+        
+    </div>
+
+    <form name "serviceForm">
+
+        <!-- <div class="block">
+            <label>Id</label>
+            <input class="input" type="text" disabled value="{{vm.entity.id}}" />
+        </div> -->
+    </form>
+</div>
+<div class="modal-footer">
+    
+    <button class="btn btn-primary" ng-click="vm.remove()">Delete</button>
+    <button class="btn btn-primary" ng-click="$close()">Cancel</button>
+</div>
+</div>

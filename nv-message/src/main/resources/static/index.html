@@ -30,11 +30,9 @@
 </head>
 
 <body >
-    <div ng-controller="getMessagesCtrl as vm">
 
-        <div style="padding-left: 30px;">
-            <button type="button" id="addRow" class="btn btn-success" ng-click="addRow()">Add Row</button>
-        </div>
+    <div ng-controller="getMessagesCtrl as vm" style="margin-left: 170px;">
+<h2 style="margin-left: 220px;">View Messages</h2>
         <br />
         <div id="serviceGrid" ui-grid-move-columns ui-grid-selection ui-grid-resize-columns ui-grid-pinning ui-grid-exporter ui-grid-auto-resize ui-grid-edit ui-grid="vm.serviceGrid" class="influxGrid"></div>
     </div>

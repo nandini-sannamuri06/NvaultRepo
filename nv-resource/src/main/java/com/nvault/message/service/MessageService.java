@@ -7,6 +7,6 @@ public interface MessageService {
 	
 	 List<Message> listAllMessages();
 	
-	Message getMessageById(int id);
+	
 
 }

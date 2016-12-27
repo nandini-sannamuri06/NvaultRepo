@@ -26,10 +26,5 @@ public class MessageController {
         return new ResponseEntity<List<Message>> (messages,HttpStatus.OK);
     }
 	
-	@RequestMapping(value="/message/{id}", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Message> getPersonById(@PathVariable("id") Integer id) {
-		Message message = messageService.getMessageById(id);
-		return new ResponseEntity<Message>(message, HttpStatus.OK);
-	}
 	
 }
