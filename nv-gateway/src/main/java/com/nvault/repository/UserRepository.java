@@ -3,10 +3,10 @@ package com.nvault.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.nvault.model.User;
+import com.nvault.model.NVaultUser;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-User findByUsername(String username);
+public interface UserRepository extends JpaRepository<NVaultUser, Integer> {
+NVaultUser findByUsername(String username);
 
 }

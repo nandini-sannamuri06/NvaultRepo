@@ -3,7 +3,6 @@ package com.nvault.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,14 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,10 +28,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.nvault.model.NVaultUser;
 import com.nvault.model.Role;
-import com.nvault.model.User;
-import com.nvault.security.CustomUserDetailsService;
-import com.nvault.service.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -61,7 +54,7 @@ public class GateWayControllerTest {
 	@Test
 	public void testUser() throws Exception {
 
-		User user = new User();
+		NVaultUser user = new NVaultUser();
 		user.setUsername("nandini");
 		user.setPassword("nandini");
 		user.setAccountNonExpired(true);
@@ -72,14 +65,8 @@ public class GateWayControllerTest {
 		Set<Role> roles = new HashSet<Role>();
 		roles.add(role);
 		user.setRoles(roles);
-		Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		for (Role r : user.getRoles()) {
-			grantedAuthorities.add(new SimpleGrantedAuthority(r.getCode()));
-		}
-		UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(),
-				user.getPassword(), user.isAccountNonExpired(), true, true, true, grantedAuthorities);
-		Authentication authToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
-				userDetails.getPassword(), userDetails.getAuthorities());
+		Authentication authToken = new UsernamePasswordAuthenticationToken(user,
+				user.getPassword(), user.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		mockMvc.perform(get("/user")).andExpect(status().isOk());
 	}

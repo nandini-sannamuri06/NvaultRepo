@@ -2,23 +2,23 @@ package com.nvault.service;
 
 import java.util.List;
 
-import com.nvault.model.User;
+import com.nvault.model.NVaultUser;
 
 public interface UserService {
 
-	User findByUserName(String userName);
+	NVaultUser findByUserName(String userName);
 
-	User findById(int id);
+	NVaultUser findById(int id);
 
-	User findByName(String name);
+	NVaultUser findByName(String name);
 
-	User saveUser(User user);
+	NVaultUser saveUser(NVaultUser user);
 
-	User updateUser(User user);
+	NVaultUser updateUser(NVaultUser user);
 
 	void deleteUserById(long id);
 
-	List<User> findAllUsers();
+	List<NVaultUser> findAllUsers();
 
 	void deleteAllUsers();
 

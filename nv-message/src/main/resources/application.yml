@@ -3,3 +3,17 @@ server:
 logging:
   level:
     org.springframework.security: DEBUG
+
+spring:
+    mail:
+      host: smtp.gmail.com
+      username: ppadala@nisum.com
+      password: xxxxxxxx
+      properties:
+                    mail:
+                      smtp:
+                        auth: true
+                        socketFactory:
+                                  port: 465
+                                  class: javax.net.ssl.SSLSocketFactory
+                                  fallback: false

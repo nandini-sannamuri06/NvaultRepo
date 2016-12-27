@@ -1,6 +1,8 @@
 package com.nvault.model;
 
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="role")
-public class Role {
+public class Role implements Serializable {
 	
 	@Id
 	@Column(name="role_id")
