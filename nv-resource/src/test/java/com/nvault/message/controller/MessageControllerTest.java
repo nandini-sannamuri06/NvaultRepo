@@ -39,7 +39,7 @@ public class MessageControllerTest {
 	}
 
 	@Test
-	public void testGetEmployees() throws Exception {
+	public void testListMessages() throws Exception {
 		Mockito.when(messageService.listAllMessages()).thenReturn(new ArrayList<Message>());
 		mockMvc.perform(get("/getMessages")).andExpect(status().isOk())
 				.andExpect(content().contentType("application/json;charset=UTF-8"));

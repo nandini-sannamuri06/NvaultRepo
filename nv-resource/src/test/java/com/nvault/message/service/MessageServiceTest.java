@@ -36,7 +36,7 @@ public class MessageServiceTest {
 	}
 	
 	@Test
-	public void testFindAll(){
+	public void testGetMessages(){
 		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
 		Collection<Message> messageObjs = messageServiceImpl.listAllMessages();
 		Assert.assertEquals(messageObjs.size(), 0);
