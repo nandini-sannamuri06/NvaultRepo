@@ -25,8 +25,7 @@ public class ContactApplication {
 			http
 				.httpBasic().and()
 				.authorizeRequests()
-					.antMatchers("/index.html", "/").permitAll()
-					.anyRequest().hasRole("USER");
+					.anyRequest().permitAll();
 			// @formatter:on
 		}
 	}
