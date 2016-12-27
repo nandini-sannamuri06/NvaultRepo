@@ -68,7 +68,7 @@
 						<label for="user" class="label">User name</label>
 						<input id="username" type="text" class="input" ng-model="nav.signup.username" name="username" ng-minlength="3" required>
 						<div class="has-error" ng-show="myForm.$dirty">
-                                      <span style="color:red" ng-show="myForm.username.$error.required">This is a required field</span>
+                                      
                                       <span style="color:red" ng-show="myForm.username.$error.minlength">Minimum length required is 3</span>
                                       
 					</div></div>
@@ -76,7 +76,7 @@
 						<label for="pass" class="label">Password</label>
 						<input id="password" type="password" class="input" ng-model="nav.signup.password" name="password" ng-minlength="3" required>
 						<div class="has-error" ng-show="myForm.$dirty">
-                                      <span style="color:red" ng-show="myForm.password.$error.required">This is a required field</span>
+                                     
                                       <span style="color:red" ng-show="myForm.password.$error.minlength">Minimum length required is 3</span>
                                       
 					</div>
@@ -85,7 +85,7 @@
 						<label for="pass" class="label">Repeat Password</label>
 						<input id="repassword" type="password" class="input" ng-model="nav.signup.repassword" name="repassword"  ng-pattern="nav.signup.password" ng-minlength="3" required>
 						<div class="has-error" ng-show="myForm.$dirty">
-						 <span style="color:red" ng-show="myForm.repassword.$error.required">This is a required field</span>
+						
                          <span style="color:red" ng-show="myForm.repassword.$error.minlength">Minimum length required is 3</span>
  						<span style="color:red" ng-show="myForm.repassword.$error.pattern">The passwords do not match.</span>
 
@@ -96,8 +96,9 @@
 						<label for="pass" class="label">Email Address</label>
 						<input id="email" type="email" class="input" ng-model="nav.signup.email" name="email" required>
 						<div class="has-error" ng-show="myForm.$dirty">
-                                      <span style="color:red" ng-show="myForm.email.$error.required">This is a required field</span>
-                                      <span style="color:red" ng-show="myForm.email.$invalid">This field is invalid </span>
+        
+                                    <span style="color:red" ng-show="myForm.email.$error.email">invalid email </span>
+                               
                                   </div>
 					</div>
 					<div class="group">
