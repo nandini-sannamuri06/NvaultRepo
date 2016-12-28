@@ -1,4 +1,4 @@
-var app = angular.module('Messages', [ 'ngAnimate', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.bootstrap', 'ui.grid.edit' ])
+var app = angular.module('Messages', [ 'ngAnimate', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.bootstrap', 'ui.grid.edit','ui.grid.pagination' ])
 
 app.controller('getMessagesCtrl', getMessagesCtrl);
 app.controller('RowEditCtrl', RowEditCtrl);
@@ -11,6 +11,8 @@ function getMessagesCtrl($scope, $http, $modal, RowEditor, uiGridConstants) {
 	vm.editRow = RowEditor.editRow;
 
 	vm.serviceGrid = {
+		paginationPageSizes: [5, 10, 15],
+		paginationPageSize: 5,
 		enableRowSelection : true,
 		enableRowHeaderSelection : false,
 		multiSelect : false,

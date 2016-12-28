@@ -8,12 +8,16 @@
     <!-- Bootstrap Core CSS -->
     <link rel="styleSheet" href="http://ui-grid.info/release/ui-grid.min.css" />
     <link rel="styleSheet" href="css/style-grid.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-touch.min.js"></script>
+   <link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
+    <script data-require="ui-bootstrap@0.13.3" data-semver="0.13.3" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.3/ui-bootstrap-tpls.min.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
     <script src="http://ui-grid.info/release/ui-grid.js"></script>
-    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.4.js"></script>
-
+    <link rel="stylesheet" href="http://ui-grid.info/release/ui-grid.css" type="text/css" />
     <style type="text/css">
         [ng\:cloak],
         [ng-cloak],
@@ -32,9 +36,14 @@
 <body >
 
     <div ng-controller="getMessagesCtrl as vm" style="margin-left: 170px;">
+    <div style="padding-left: 30px;">
+			<button type="button" id="addRow" style="margin-top: 50px;
+			" class="btn btn-success" ng-click="addRow()">Compose Message</button>
+		</div>
 <h2 style="margin-left: 220px;">View Messages</h2>
         <br />
-        <div id="serviceGrid" ui-grid-move-columns ui-grid-selection ui-grid-resize-columns ui-grid-pinning ui-grid-exporter ui-grid-auto-resize ui-grid-edit ui-grid="vm.serviceGrid" class="influxGrid"></div>
+        <div id="serviceGrid" ui-grid-move-columns ui-grid-pagination ui-grid-selection ui-grid-resize-columns ui-grid-pinning ui-grid-exporter ui-grid-auto-resize ui-grid-pagination ui-grid-edit ui-grid ="vm.serviceGrid" class="influxGrid" style="height: 300px;"></div>
+  
     </div>
 </body>
 
