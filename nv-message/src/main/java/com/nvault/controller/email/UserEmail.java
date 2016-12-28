@@ -3,16 +3,17 @@ package com.nvault.controller.email;
 import java.util.Arrays;
 
 public class UserEmail {
+
 	
-	private String to;
+	private String[] toAddress;
 	private String body;
 	private String subject;
 	private String[] recipient;
-	public String getTo() {
-		return to;
+	public String[] getToAddress() {
+		return toAddress;
 	}
-	public void setTo(String to) {
-		this.to = to;
+	public void setToAddress(String[] toAddress) {
+		this.toAddress = toAddress;
 	}
 	public String getBody() {
 		return body;
@@ -34,10 +35,12 @@ public class UserEmail {
 	}
 	@Override
 	public String toString() {
-		return "UserEmail [to=" + to + ", body=" + body + ", subject=" + subject + ", recipient="
-				+ Arrays.toString(recipient) + "]";
+		return "UserEmail [toAddress=" + Arrays.toString(toAddress) + ", body=" + body + ", subject=" + subject
+				+ ", recipient=" + Arrays.toString(recipient) + "]";
 	}
 	
 	
-
+	
+	
+	
 }

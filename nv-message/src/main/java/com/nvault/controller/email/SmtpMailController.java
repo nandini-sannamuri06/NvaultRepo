@@ -60,19 +60,17 @@ public class SmtpMailController {
 	
 	@RequestMapping(value="/sendmail", method=RequestMethod.POST)
 	public String sendMail(@RequestBody UserEmail userEmail){
-		
-		
-		System.out.println(userEmail);
+System.out.println(userEmail);
 		
 		 
 		
 		try{
 			
-			String to = userEmail.getTo();
+			String[] toAddress = userEmail.getToAddress();
 			String subject =userEmail.getSubject();
-			String text= userEmail.getBody();
+			String body= userEmail.getBody();
 			
-			smtpMailSender.send(to, subject, text);
+			smtpMailSender.send(toAddress, subject, body);
 				
 			}catch(Exception ex){
 				return ex.getMessage();

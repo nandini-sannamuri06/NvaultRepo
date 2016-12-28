@@ -14,7 +14,7 @@ public class SmtpMailSender {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	public void send(String to, String subject,String body) throws Exception{
+	public void send(String[] toAddress, String subject,String body) throws Exception{
 		
 		MimeMessage message=javaMailSender.createMimeMessage();
 		try {
@@ -22,8 +22,16 @@ public class SmtpMailSender {
 			MimeMessageHelper helper=new MimeMessageHelper(message,true);
 			
 			helper.setSubject(subject);
-			helper.setTo(to);
-			helper.setText(body);
+			
+			helper.setTo(toAddress[0]);
+			
+			if(toAddress.length>1){
+			for(int i=1;i<toAddress.length;i++){
+				helper.addCc(toAddress[i]);
+			}
+			}
+			
+			helper.setText(body,true);
 
 			javaMailSender.send(message);
 			
