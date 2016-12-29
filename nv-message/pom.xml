@@ -69,6 +69,13 @@
 			<artifactId>httpclient</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		
+		<dependency>
+		<groupId>com.nvault</groupId>
+	<artifactId>nv-resource</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+		
 	</dependencies>
 
 	<properties>
