@@ -2,7 +2,6 @@ package com.nvault.contact.controller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,26 +23,13 @@ public class ContactController {
 
 
 
-	    @RequestMapping(value = "/create", method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	    public Contact registration(@RequestBody Contact contact) {
+	    @RequestMapping(value = "/create", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity<Contact> registration(@RequestBody Contact contact) {
 	 		contact.setUserId("1");
-	    	contactService.saveContact(contact);
-	    	return contact;
+	 		Contact contactResp = contactService.saveContact(contact);
+	    	return new ResponseEntity<Contact> (contactResp,HttpStatus.OK);
 	    }
 	    
-//	    @RequestMapping(value = "/create", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-//	    public void registration(HttpServletRequest request) {
-//	    	String fn = (String) request.getParameter("firstName");
-//	    	String ln = (String) request.getParameter("lastName");
-//	    	String em = (String) request.getParameter("emailId");
-//	    	Contact contact = new Contact();
-//	    	contact.setEmailId(em);
-//	    	contact.setFirstName(fn);
-//	    	contact.setLastName(ln);
-//	    	contact.setUserId("1");
-//	    	contactService.saveContact(contact);
-//	    }
-
 
 	    @RequestMapping(value = "/allContacts", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<List<Contact>> getAllContacts() {
@@ -51,10 +37,10 @@ public class ContactController {
 	        return new ResponseEntity<List<Contact>> (contacts,HttpStatus.OK);
 	    }
 	    
-	    @RequestMapping(value = "/update", method = RequestMethod.PUT,consumes=MediaType.APPLICATION_JSON_VALUE,produces=MediaType.APPLICATION_JSON_VALUE)
-	    public Contact updateContact( @RequestBody Contact contact) {
-	    	contactService.updateContact(contact);
-	        return contact;
+	    @RequestMapping(value = "/update", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity<Contact> updateContact( @RequestBody Contact contact) {
+	    	Contact contactResp = contactService.updateContact(contact);
+	    	return new ResponseEntity<Contact> (contactResp,HttpStatus.OK);
 	    }
 	    
 	    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
