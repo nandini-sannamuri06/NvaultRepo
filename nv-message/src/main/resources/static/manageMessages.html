@@ -1,17 +1,18 @@
 <div>
-    <div class="modal-header">
-        <h3 class="modal-title">Manage Messages</h3>
-    </div>
-    <div class="modal-body">
-        Recipient : <input class="input" style="border:none !important;" type="text" disabled value="{{vm.entity.recipient}}" />
-        <br>
-        <hr>
-        <br> Body : <input class="input" style="border:none !important;" type="text" disabled ng-model="vm.entity.body" />
-        <hr>
-        
-    </div>
+	<div class="modal-header">
+		<h3 class="modal-title">Manage Messages</h3>
+	</div>
+	<div class="modal-body">
+		Recipient : <input class="input" style="border: none !important;"
+			type="text" disabled value="{{vm.entity.recipient}}" /> <br>
+		<hr>
+		<br> Body : <input class="input" style="border: none !important;"
+			type="text" disabled ng-model="vm.entity.body" />
+		<hr>
 
-    <form name "serviceForm">
+	</div>
+
+	<formname "serviceForm">
 
         <!-- <div class="block">
             <label>Id</label>
@@ -20,8 +21,9 @@
     </form>
 </div>
 <div class="modal-footer">
-    
-    <button class="btn btn-primary" ng-click="vm.remove()">Delete</button>
-    <button class="btn btn-primary" ng-click="$close()">Cancel</button>
+
+	<button class="btn btn-primary" ng-click="vm.trash()">Delete</button>
+	<button class="btn btn-primary" ng-click="vm.archieve()">Archieve</button>
+	<button class="btn btn-primary" ng-click="$close()">Cancel</button>
 </div>
 </div>

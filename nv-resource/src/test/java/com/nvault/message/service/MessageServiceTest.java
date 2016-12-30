@@ -1,4 +1,8 @@
 package com.nvault.message.service;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -8,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -41,7 +46,57 @@ public class MessageServiceTest {
 		Collection<Message> messageObjs = messageServiceImpl.listAllMessages();
 		Assert.assertEquals(messageObjs.size(), 0);
 	}
-
-
+	
+	@Test
+	public void testGetAllMessages(){
+		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
+		Collection<Message> messageObjs = messageServiceImpl.getMessagesInclArchieve();
+		Assert.assertEquals(messageObjs.size(), 0);
+	}
+	
+	@Test
+	public void testTrashMessages(){
+		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
+		Collection<Message> messageObjs = messageServiceImpl.getTrashMessages();
+		Assert.assertEquals(messageObjs.size(), 0);
+	}
+	
+	@Test
+	public void testArchievedMessages(){
+		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
+		Collection<Message> messageObjs = messageServiceImpl.getArchiveMessages();
+		Assert.assertEquals(messageObjs.size(), 0);
+	}
+	
+	@Test
+	public void updateMessageTrashWithNull() throws Exception {
+		Mockito.when(messageRepository.findOne(Matchers.anyInt())).thenReturn(null);
+		Message message = messageServiceImpl.updateMessage(10);
+		
+	}
+	
+	@Test
+	public void updateMessageTrash() throws Exception {
+		Message message = new Message();
+		Mockito.when(messageRepository.findOne(Matchers.anyInt())).thenReturn(message);
+		Message messageUpdate = messageServiceImpl.updateMessage(10);
+		Assert.assertEquals(message.getTrash(), 1);
+		
+	}
+	@Test
+	public void updateMessageArchieveWithNull() throws Exception {
+		Mockito.when(messageRepository.findOne(Matchers.anyInt())).thenReturn(null);
+		Message message = messageServiceImpl.MessageArchieve(10);
+		
+	}
+	
+	@Test
+	public void updateMessageArchieve() throws Exception {
+		Message message = new Message();
+		Mockito.when(messageRepository.findOne(Matchers.anyInt())).thenReturn(message);
+		Message messageUpdate = messageServiceImpl.MessageArchieve(10);
+		Assert.assertEquals(message.getArchieved(), 1);
+		
+	}
 }
 

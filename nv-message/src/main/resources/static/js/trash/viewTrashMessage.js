@@ -12,7 +12,7 @@ angular.module('mailService',[]).factory('mailFactory',function($http){
 		},
 	}
 });
-app.controller('getMessagesCtrl', getMessagesCtrl);
+app.controller('getTrMessagesCtrl', getTrMessagesCtrl);
 app.controller('RowEditCtrl', RowEditCtrl);
 app.service('RowEditor', RowEditor);
 
@@ -33,13 +33,13 @@ app.controller('myCtrl', function($scope, $http, mailFactory) {
 	}
 });
 
-getMessagesCtrl.$inject = [ '$scope', '$http', '$modal', 'RowEditor', 'uiGridConstants' ];
-function getMessagesCtrl($scope, $http, $modal, RowEditor, uiGridConstants) {
-	var vm = this;
+getTrMessagesCtrl.$inject = [ '$scope', '$http', '$modal', 'RowEditor', 'uiGridConstants' ];
+function getTrMessagesCtrl($scope, $http, $modal, RowEditor, uiGridConstants) {
+	var vtm = this;
 
-	vm.editRow = RowEditor.editRow;
+	vtm.editRow = RowEditor.editRow;
 
-	vm.serviceGrid = {
+	vtm.serviceGridtrash = {
 		paginationPageSizes: [5, 10, 15],
 		paginationPageSize: 5,
 		enableRowSelection : true,
@@ -48,10 +48,13 @@ function getMessagesCtrl($scope, $http, $modal, RowEditor, uiGridConstants) {
 		enableSorting : true,
 		enableFiltering : true,
 		enableGridMenu : true,
-rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
+// rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\"
+// ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by
+// col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{
+// 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
 	};
 
-	vm.serviceGrid.columnDefs = [ {
+	vtm.serviceGridtrash.columnDefs = [ {
 		field : 'id',
 		displayName : 'Id',
 		enableSorting : true,
@@ -87,8 +90,8 @@ rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repea
 	}
 	];
 
-	$http.get('/resource/getMessages').success(function(response) {
-		vm.serviceGrid.data = response;
+	$http.get('/resource/getTrashMessages').success(function(response) {
+		vtm.serviceGridtrash.data = response;
 	});
 
 	$scope.addRow = function() {

@@ -1,6 +1,6 @@
-var app = angular.module('Messages', [ 'ngAnimate', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.bootstrap', 'ui.grid.edit','ui.grid.pagination','ngTagsInput','mailService' ])
+var app = angular.module('Messages', [ 'ngAnimate', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.bootstrap', 'ui.grid.edit','ui.grid.pagination','ngTagsInput','mailService'])
 
-// Venu
+
 angular.module('mailService',[]).factory('mailFactory',function($http){
 	return{
 		sendMail: function(mailObj){
@@ -12,7 +12,7 @@ angular.module('mailService',[]).factory('mailFactory',function($http){
 		},
 	}
 });
-app.controller('getMessagesCtrl', getMessagesCtrl);
+app.controller('viewAllMessagesCtrl', viewAllMessagesCtrl);
 app.controller('RowEditCtrl', RowEditCtrl);
 app.service('RowEditor', RowEditor);
 
@@ -33,13 +33,13 @@ app.controller('myCtrl', function($scope, $http, mailFactory) {
 	}
 });
 
-getMessagesCtrl.$inject = [ '$scope', '$http', '$modal', 'RowEditor', 'uiGridConstants' ];
-function getMessagesCtrl($scope, $http, $modal, RowEditor, uiGridConstants) {
-	var vm = this;
+viewAllMessagesCtrl.$inject = [ '$scope', '$http', '$modal', 'RowEditor', 'uiGridConstants' ];
+function viewAllMessagesCtrl($scope, $http, $modal, RowEditor, uiGridConstants) {
+	var vmAll = this;
 
-	vm.editRow = RowEditor.editRow;
+	vmAll.editRow = RowEditor.editRow;
 
-	vm.serviceGrid = {
+	vmAll.serviceGridAll = {
 		paginationPageSizes: [5, 10, 15],
 		paginationPageSize: 5,
 		enableRowSelection : true,
@@ -51,7 +51,7 @@ function getMessagesCtrl($scope, $http, $modal, RowEditor, uiGridConstants) {
 rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
 	};
 
-	vm.serviceGrid.columnDefs = [ {
+	vmAll.serviceGridAll.columnDefs = [ {
 		field : 'id',
 		displayName : 'Id',
 		enableSorting : true,
@@ -87,8 +87,8 @@ rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repea
 	}
 	];
 
-	$http.get('/resource/getMessages').success(function(response) {
-		vm.serviceGrid.data = response;
+	$http.get('/resource/AllMessagesInclArchieve').success(function(response) {
+		vmAll.serviceGridAll.data = response;
 	});
 
 	$scope.addRow = function() {

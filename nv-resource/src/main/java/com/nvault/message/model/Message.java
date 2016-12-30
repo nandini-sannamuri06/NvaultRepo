@@ -17,24 +17,30 @@ import javax.persistence.TemporalType;
 public class Message {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
-	@Column(name="subject")
+
+	@Column(name = "subject")
 	private String subject;
-	
-	@Column(name="recipient")
+
+	@Column(name = "recipient")
 	private String recipient;
-	
-	@Column(name="body")
+
+	@Column(name = "body")
 	private String body;
-	
+
 	@Temporal(TemporalType.DATE)
-	@Column(name="date")
+	@Column(name = "date")
 	private Date date;
-	
-	@Column(name="sender")
+
+	@Column(name = "sender")
 	private String sender;
+
+	@Column(name = "trash")
+	private int trash;
+
+	@Column(name = "archieved")
+	private int archieved;
 
 	public int getId() {
 		return id;
@@ -44,12 +50,28 @@ public class Message {
 		this.id = id;
 	}
 
+	public int getTrash() {
+		return trash;
+	}
+
+	public void setTrash(int trash) {
+		this.trash = trash;
+	}
+
 	public String getSubject() {
 		return subject;
 	}
 
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	public int getArchieved() {
+		return archieved;
+	}
+
+	public void setArchieved(int archieved) {
+		this.archieved = archieved;
 	}
 
 	public String getRecipient() {
@@ -76,7 +98,6 @@ public class Message {
 		this.sender = sender;
 	}
 
-	
 	public String getBody() {
 		return body;
 	}
@@ -85,9 +106,8 @@ public class Message {
 		this.body = body;
 	}
 
-	
-
-	public Message(int id, String subject, String recipient, String body, Date date, String sender) {
+	public Message(int id, String subject, String recipient, String body, Date date, String sender, int trash,
+			int archieved) {
 		super();
 		this.id = id;
 		this.subject = subject;
@@ -95,21 +115,19 @@ public class Message {
 		this.body = body;
 		this.date = date;
 		this.sender = sender;
+		this.trash = trash;
+		this.archieved = archieved;
 	}
 
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", subject=" + subject + ", recipient=" + recipient + ", body="
-				+ body + ", date=" + date + ", sender=" + sender + "]";
+		return "Message [id=" + id + ", subject=" + subject + ", recipient=" + recipient + ", body=" + body + ", date="
+				+ date + ", sender=" + sender + ", trash=" + trash + ", archieved=" + archieved + "]";
 	}
 
 	public Message() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
-	
-	
+
 }
