@@ -12,16 +12,16 @@ public class ContactService {
 	@Autowired
 	ContactRepository contactRepository;
 	
-	public void saveContact(Contact contact){
-		contactRepository.save(contact);
+	public Contact saveContact(Contact contact){
+		return contactRepository.save(contact);
 	}
 	
 	public List<Contact> getAllContacts(){
 		return contactRepository.findAll();
 	}
 	
-	public void updateContact(Contact contact){
-		contactRepository.save(contact);
+	public Contact updateContact(Contact contact){
+		return contactRepository.save(contact);
 	}
 	
 	public void deleteContact(int id){
