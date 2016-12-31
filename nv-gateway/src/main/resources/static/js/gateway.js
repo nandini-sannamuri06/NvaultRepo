@@ -1,10 +1,10 @@
-angular.module('gateway', []).config(function($httpProvider) {
+angular.module('gateway', ['ui.bootstrap']).config(function($httpProvider) {
 
 	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 }).controller('navigation',
 
-		function($http,$timeout) {
+		function($http,$timeout,$uibModal) {
 	var self = this;
 
 	var authenticate = function(credentials, callback) {
@@ -43,7 +43,6 @@ angular.module('gateway', []).config(function($httpProvider) {
 		});
 
 	}
-
 	self.credentials = {};
 	self.loginError = false;
 	self.login = function() {
@@ -86,8 +85,54 @@ angular.module('gateway', []).config(function($httpProvider) {
 			        	      });
 		
 	}
-	
+	self.forgot = function()
+	{
+		console.log('opening pop up');
+		var uibModalInstance = $uibModal.open({
+		templateUrl: 'forgotPassword.html',
+		controller:function($uibModalInstance ,$scope,$http,$timeout){
+			     $scope.close = function () {
+			            $uibModalInstance.dismiss('cancel');
+			         };
+			     $scope.reset = function(email,userName) {
+			    	 $scope.submitted = true;
+			    	 $http.get('checkEmail',{params: {'email': email,'userName':userName}}).
+			    	 then(function(response) {
+			    		 console.log("sendMail");
+			    		 $http.post('/resource/sendMail',{'sender':userName,
+			    			 'recipient':email,
+//			    			 Id should be generated and appended and appended to the URL.Once the user is successfully reset the password then need to insert into the DB which is like already reseted.If the user again tries to update need to thrown an Exception like link is already used.
+			    			 'body':'http://localhost:9006/resetPassword.html?id='+Math.random()*9,
+			    			 'subject':'Reset Password'
+			    		 }).then(function(resp){
+			    			 console.log("sendMail")
+			    			 $scope.success=true;
+			    		 },function(resp){
+			    			 $scope.forgotError = true;
+			    			 $scope.success=false
+					 			if (response.status === 0) {
+					 				$scope.error = 'No connection. Verify application is running.';
+					 			} else if (response.status == 400) {
+					 				$scope.error = 'Email has Not Been Sent Successfully';
+					 			} else if (response.status == 403) {
+					 				$scope.error = 'Dont have Permision to NVault Application';
+					 			} 
+					 			 $timeout(function () { $scope.forgotError = false; }, 5000);
+			    		 });
+			 		}, function(response) {
+			 			$scope.forgotError = true;
+			 			if (response.status === 0) {
+			 				$scope.error = 'No connection. Verify application is running.';
+			 			} else if (response.status == 400) {
+			 				$scope.error = 'This Email is not Registered with us.Please provide the valid email Id';
+			 			} else if (response.status == 403) {
+			 				$scope.error = 'Dont have Permision to NVault Application';
+			 			}
+			 			 $timeout(function () { $scope.forgotError = false; }, 5000);   
+			 		});
 
-
-	
+			     }
+		}
+		});
+	}
 });

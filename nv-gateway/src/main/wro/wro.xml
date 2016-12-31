@@ -6,5 +6,6 @@
     <js>webjar:angularjs/1.4.9/angular.min.js</js>
     <js>webjar:angularjs/1.4.9/angular-route.min.js</js>
     <js>webjar:angularjs/1.4.9/angular-cookies.min.js</js>
+     <js>/webjars/bootstrap/3.3.5/js/bootstrap.min.js</js>
    </group>
 </groups>

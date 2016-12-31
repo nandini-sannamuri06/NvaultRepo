@@ -2,11 +2,15 @@ package com.nvault.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nvault.model.NVaultUser;
+import com.nvault.model.PasswordDetails;
+import com.nvault.repository.PasswordDtlsRepository;
 import com.nvault.repository.UserRepository;
 
 @Service
@@ -14,23 +18,24 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	public UserRepository userRepository;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Override
 	public NVaultUser findByUserName(String userName) {
 		return userRepository.findByUsername(userName);
 	}
-	
+
 	@Override
 	public NVaultUser findById(int id) {
-		
+
 		return userRepository.findOne(id);
 	}
 
 	@Override
 	public NVaultUser findByName(String name) {
-		
+
 		return null;
 	}
 
@@ -38,33 +43,32 @@ public class UserServiceImpl implements UserService {
 	public NVaultUser saveUser(NVaultUser user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		NVaultUser saveduser = userRepository.save(user);
-		
+
 		return saveduser;
-		
+
 	}
 
 	@Override
 	public NVaultUser updateUser(NVaultUser user) {
-		
+
 		return null;
 	}
 
 	@Override
-	public void deleteUserById(long id) {
-		
-		
+	public NVaultUser findByEmailID(String mail, String userName) {
+		return userRepository.findByMail(mail, userName);
 	}
 
 	@Override
-	public List<NVaultUser> findAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void deleteAllUsers() {
-		// TODO Auto-generated method stub
-		
+	public NVaultUser updatePassword(String password, String email, String userName) throws Exception {
+		String encryptedPassword = passwordEncoder.encode(password);
+		NVaultUser user = userRepository.findByMail(email, userName);
+		if (user != null) {
+			user.setPassword(encryptedPassword);
+			return userRepository.save(user);
+		} else {
+			return null;
+		}
 	}
 
 }

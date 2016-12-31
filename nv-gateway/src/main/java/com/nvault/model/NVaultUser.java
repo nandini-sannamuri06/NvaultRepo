@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
 @Table(name = "user")
-@JsonDeserialize(as = NVaultUser.class)
 public class NVaultUser implements UserDetails {
 
 	/**

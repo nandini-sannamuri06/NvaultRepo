@@ -18,7 +18,20 @@ spring:
         hibernate:
             ddl-auto: update
             naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-            dialect : org.hibernate.dialect.MySQL5Dialect  
+            dialect : org.hibernate.dialect.MySQL5Dialect 
+    mail:
+      mail:
+      host: smtp.gmail.com
+      username: nsuggula@nisum.com
+      password: xxxxxx
+      properties:
+                    mail:
+                      smtp:
+                        auth: true
+                        socketFactory:
+                                  port: 465
+                                  class: javax.net.ssl.SSLSocketFactory
+                                  fallback: false 
             
 nv-path: /javed_backup/uploads  
 

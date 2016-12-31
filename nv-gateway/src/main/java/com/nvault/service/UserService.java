@@ -1,6 +1,5 @@
 package com.nvault.service;
 
-import java.util.List;
 
 import com.nvault.model.NVaultUser;
 
@@ -15,11 +14,11 @@ public interface UserService {
 	NVaultUser saveUser(NVaultUser user);
 
 	NVaultUser updateUser(NVaultUser user);
+	
+	NVaultUser findByEmailID(String mail,String userName);
 
-	void deleteUserById(long id);
-
-	List<NVaultUser> findAllUsers();
-
-	void deleteAllUsers();
+	NVaultUser updatePassword(String password,String email,String userName) throws Exception;
+	
+	
 
 }

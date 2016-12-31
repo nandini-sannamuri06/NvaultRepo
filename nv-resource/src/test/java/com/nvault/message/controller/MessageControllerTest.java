@@ -67,8 +67,7 @@ public class MessageControllerTest {
 	@Test
 	public void updateMessageArchieveWithNull() throws Exception {
 		Mockito.when(messageService.MessageArchieve(Matchers.anyInt())).thenReturn(null);
-		mockMvc.perform(get("/updateMessageArchieve/10")).andExpect(status().isOk())
-		.andExpect(content().contentType("application/json;charset=UTF-8"));
+		mockMvc.perform(get("/updateMessageArchieve/10")).andExpect(status().isOk());
 		
 	}
 	@Test
@@ -82,8 +81,7 @@ public class MessageControllerTest {
 	@Test
 	public void updateMessageTrashWithNull() throws Exception {
 		Mockito.when(messageService.updateMessage(Matchers.anyInt())).thenReturn(null);
-		mockMvc.perform(get("/updateMessage/10")).andExpect(status().isOk())
-		.andExpect(content().contentType("application/json;charset=UTF-8"));
+		mockMvc.perform(get("/updateMessage/10")).andExpect(status().isOk());
 		
 	}
 	@Test
