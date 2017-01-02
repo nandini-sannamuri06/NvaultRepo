@@ -113,6 +113,7 @@ function RowEditCtrl($http, $modalInstance, grid, row) {
 					grid.data.push(row.entity);
 					
 					$modalInstance.close(row.entity); 
+					alert('Contact Added Successfully!!!'); 
 					}).error(function(response) {
 						alert('Cannot Add row (error in console)'); 
 						console.dir(response);
@@ -122,7 +123,13 @@ function RowEditCtrl($http, $modalInstance, grid, row) {
 			} else {
 				row.entity = angular.extend(row.entity, vm.entity);
 				
-				$http.post('/resource/update', vm.entity).success(function(response) { $modalInstance.close(row.entity); }).error(function(response) { alert('Cannot edit row (error in console)'); console.dir(response); });
+				$http.post('/resource/update', vm.entity).success(function(response) {
+					$modalInstance.close(row.entity); 
+					alert('Contact Updated Successfully!!!'); 
+					}).error(function(response) { 
+						alert('Cannot edit row (error in console)');
+						console.dir(response);
+						});
 				 
 			}
 		}else{
@@ -140,6 +147,7 @@ function RowEditCtrl($http, $modalInstance, grid, row) {
 				 var index = grid.appScope.vm.serviceGrid.data.indexOf(row.entity);
 				 grid.appScope.vm.serviceGrid.data.splice(index, 1);
 				 $modalInstance.close(row.entity); 
+				 alert('Contact Deleted Successfully!!!'); 
 				 }).error(function(response) { 
 					 alert('Cannot delete row (error in console)'); 
 					 console.dir(response); 
