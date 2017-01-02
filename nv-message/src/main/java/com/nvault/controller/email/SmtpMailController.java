@@ -88,7 +88,7 @@ public class SmtpMailController {
 		return "Success";
 	}
 
-	@RequestMapping(value = "/send", method = RequestMethod.POST)
+	@RequestMapping(value = "/send9", method = RequestMethod.POST)
 	public Mail sendMail(@RequestBody Mail mail) {
 		
 	try{
