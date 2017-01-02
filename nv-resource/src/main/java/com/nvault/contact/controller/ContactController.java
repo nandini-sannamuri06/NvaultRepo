@@ -39,7 +39,9 @@ public class ContactController {
 
 	    @RequestMapping(value = "/allContacts", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<List<Contact>> getAllContacts() {
-	    	List<Contact> contacts = contactService.getAllContacts();
+	    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		    NVaultUser user = (NVaultUser)auth.getPrincipal();
+	    	List<Contact> contacts = contactService.getAllContacts(user.getId()+"");
 	        return new ResponseEntity<List<Contact>> (contacts,HttpStatus.OK);
 	    }
 	    

@@ -16,8 +16,8 @@ public class ContactService {
 		return contactRepository.save(contact);
 	}
 	
-	public List<Contact> getAllContacts(){
-		return contactRepository.findAll();
+	public List<Contact> getAllContacts(String userId){
+		return contactRepository.findAll(userId);
 	}
 	
 	public Contact updateContact(Contact contact){
