@@ -2,6 +2,7 @@ package com.nvault.message.controller;
 
 
 
+import org.apache.velocity.runtime.directive.Foreach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -36,7 +37,7 @@ public class SmtpMailController {
 	public com.nvault.controller.Mail sendMail(@RequestBody com.nvault.controller.Mail mail) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    NVaultUser user = (NVaultUser)auth.getPrincipal();
+	   NVaultUser user = (NVaultUser)auth.getPrincipal();
  		
 		
 
@@ -59,8 +60,16 @@ public class SmtpMailController {
 			
 			message.setBody(mail.getBody());
 			message.setSubject(mail.getSubject());
+			
+			String commaSeperatedToAddress="";
+			
+			for (String string : toAddress) {
+				commaSeperatedToAddress += string+",";
+			}
+			
+			commaSeperatedToAddress=commaSeperatedToAddress.substring(0,commaSeperatedToAddress.length()-1);
 
-			message.setRecipient( "mallik@nisum.com,siva@nisum.com" );
+			message.setRecipient( commaSeperatedToAddress );
 			message.setUser_id(user.getId());
 			
 			
