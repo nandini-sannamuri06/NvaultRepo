@@ -35,9 +35,9 @@ public class SmtpMailController {
 	@RequestMapping(value = "/send", method = RequestMethod.POST)
 	public com.nvault.controller.Mail sendMail(@RequestBody com.nvault.controller.Mail mail) {
 		
-		//Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    //NVaultUser user = (NVaultUser)auth.getPrincipal();
- 		//user.getId()
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    NVaultUser user = (NVaultUser)auth.getPrincipal();
+ 		
 		
 
 		try {
@@ -50,7 +50,7 @@ public class SmtpMailController {
 			String subject = mail.getSubject();
 			String body = mail.getBody();
 
-			//smtpMailSender.send(toAddress, subject, body);
+			smtpMailSender.send(toAddress, subject, body);
 			
 			
 			
@@ -61,8 +61,8 @@ public class SmtpMailController {
 			message.setSubject(mail.getSubject());
 
 			message.setRecipient( "mallik@nisum.com,siva@nisum.com" );
-			//message.setId(user.getId());
-			message.setId(999);
+			message.setId(user.getId());
+			
 			message.setSender(sender);
 			
 			
