@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nvault.message.model.Message;
+import com.nvault.message.service.PwdDtlsService;
 import com.nvault.message.util.EmailSenderUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,6 +35,9 @@ public class EmailControllerTest {
 	
 	public MockMvc mockMvc;
 	
+	@Mock
+	public PwdDtlsService pwdDtlsService;
+	
 	@Before
 	public void setUp(){
 		mockMvc = MockMvcBuilders.standaloneSetup(emailController).build();
@@ -43,7 +47,7 @@ public class EmailControllerTest {
 	public void testSendEmailWithFailure() throws Exception{
 		Mockito.when(emailSenderUtil.sendMail(Matchers.any(Message.class))).thenReturn("failure");
 		Message message = new Message();
-		message.setBody("xxxx");
+		message.setBody("xxxx?id=1111");
 		String jsonObj = new ObjectMapper().writeValueAsString(message);
 		mockMvc.perform(post("/sendMail").content(jsonObj).contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest());
 		
@@ -52,7 +56,7 @@ public class EmailControllerTest {
 	public void testSendEmailWithSuccess() throws Exception{
 		Mockito.when(emailSenderUtil.sendMail(Matchers.any(Message.class))).thenReturn("success");
 		Message message = new Message();
-		message.setBody("xxxx");
+		message.setBody("xxxx?id=1111");
 		String jsonObj = new ObjectMapper().writeValueAsString(message);
 		mockMvc.perform(post("/sendMail").content(jsonObj).contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk());
 		

@@ -2,7 +2,6 @@ package com.nvault.message.util;
 
 import java.io.StringWriter;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.velocity.Template;
@@ -11,14 +10,9 @@ import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.nvault.message.model.Message;
-import com.nvault.model.NVaultUser;
 
 @Component
 public class EmailSenderUtil {
@@ -37,7 +31,7 @@ public class EmailSenderUtil {
 			messageHelper.setTo(message.getRecipient());
 			messageHelper.setSubject(message.getSubject());
 			VelocityContext context = new VelocityContext();
-			context.put("user", message.getSender());
+			context.put("user", message.getRecipient().split("@")[0]);
 			context.put("message", message.getBody());
 			velocityEngine.init();
 			Template template = velocityEngine.getTemplate("ForgotPasswordTemplate.vm");

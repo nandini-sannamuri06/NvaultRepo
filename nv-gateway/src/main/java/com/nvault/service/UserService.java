@@ -15,9 +15,9 @@ public interface UserService {
 
 	NVaultUser updateUser(NVaultUser user);
 	
-	NVaultUser findByEmailID(String mail,String userName);
+	NVaultUser findByEmailID(String mail);
 
-	NVaultUser updatePassword(String password,String email,String userName) throws Exception;
+	NVaultUser updatePassword(String password,String email) throws Exception;
 	
 	
 
