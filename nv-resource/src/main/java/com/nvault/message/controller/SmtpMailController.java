@@ -61,7 +61,8 @@ public class SmtpMailController {
 			message.setSubject(mail.getSubject());
 
 			message.setRecipient( "mallik@nisum.com,siva@nisum.com" );
-			message.setId(user.getId());
+			message.setUser_id(user.getId());
+			
 			
 			message.setSender(sender);
 			
