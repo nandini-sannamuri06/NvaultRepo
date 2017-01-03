@@ -1,6 +1,7 @@
 package com.nvault.model;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,13 +13,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.nvault.doc.model.UserDoc;
+
 
 @Entity
 @Table(name = "user")
@@ -51,6 +54,10 @@ public class NVaultUser implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "userRole", joinColumns = @JoinColumn(name = "accountId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "role_id"))
 	public Set<Role> roles;
+	
+	//bi-directional many-to-one association to Document
+	@OneToMany(mappedBy="user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<UserDoc> documents;
 
 	public int getId() {
 		return id;
@@ -124,5 +131,14 @@ public class NVaultUser implements UserDetails {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public List<UserDoc> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<UserDoc> documents) {
+		this.documents = documents;
+	}
+	
 
 }
