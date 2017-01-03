@@ -1,8 +1,5 @@
 package com.nvault.controller;
 
-import static org.mockito.Mockito.validateMockitoUsage;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -92,8 +89,8 @@ public class GateWayControllerTest {
 
 	@Test
 	public void testGetEmailDtlsWithNull() throws Exception {
-		Mockito.when(userService.findByEmailID(Matchers.anyString(), Matchers.anyString())).thenReturn(null);
-		mockMvc.perform(get("/checkEmail").param("email", "xxx@gmail.com").param("userName", "xxx"))
+		Mockito.when(userService.findByEmailID(Matchers.anyString())).thenReturn(null);
+		mockMvc.perform(get("/checkEmail").param("email", "xxx@gmail.com"))
 				.andExpect(status().isBadRequest());
 
 	}
@@ -104,8 +101,8 @@ public class GateWayControllerTest {
 		user.setUsername("nandini");
 		user.setPassword("nandini");
 		user.setAccountNonExpired(true);
-		Mockito.when(userService.findByEmailID(Matchers.anyString(), Matchers.anyString())).thenReturn(user);
-		mockMvc.perform(get("/checkEmail").param("email", "xxx@gmail.com").param("userName", "xxx"))
+		Mockito.when(userService.findByEmailID(Matchers.anyString())).thenReturn(user);
+		mockMvc.perform(get("/checkEmail").param("email", "xxx@gmail.com"))
 				.andExpect(status().isOk());
 
 	}
@@ -132,9 +129,9 @@ public class GateWayControllerTest {
 		PasswordDetails pwdDtls = new PasswordDetails();
 		pwdDtls.setId(10);
 		pwdDtls.setUniqueId("111222");
-		pwdDtls.setExpired(1);
-		Mockito.when(pwdDtlsService.getPwdDtls(Matchers.anyString())).thenReturn(null);
-        Mockito.when(userService.updatePassword(Matchers.anyString(), Matchers.anyString(), Matchers.anyString())).thenReturn(user);
+		pwdDtls.setExpired(0);
+		Mockito.when(pwdDtlsService.getPwdDtls(Matchers.anyString())).thenReturn(pwdDtls);
+        Mockito.when(userService.updatePassword(Matchers.anyString(), Matchers.anyString())).thenReturn(user);
         Mockito.when(pwdDtlsService.savePwdDtls(pwdDtls)).thenReturn(pwdDtls);
 		ResetPassword resetPwd = new ResetPassword();
 		resetPwd.setMail("xxx");
@@ -143,8 +140,12 @@ public class GateWayControllerTest {
 	}
 	@Test
 	public void testResetPwdWithOutUser() throws Exception {
-		Mockito.when(pwdDtlsService.getPwdDtls(Matchers.anyString())).thenReturn(null);
-        Mockito.when(userService.updatePassword(Matchers.anyString(), Matchers.anyString(), Matchers.anyString())).thenReturn(null);
+		PasswordDetails pwdDtls = new PasswordDetails();
+		pwdDtls.setId(10);
+		pwdDtls.setUniqueId("111222");
+		pwdDtls.setExpired(0);
+		Mockito.when(pwdDtlsService.getPwdDtls(Matchers.anyString())).thenReturn(pwdDtls);
+        Mockito.when(userService.updatePassword(Matchers.anyString(), Matchers.anyString())).thenReturn(null);
 		ResetPassword resetPwd = new ResetPassword();
 		resetPwd.setMail("xxx");
 		String obj = new ObjectMapper().writeValueAsString(resetPwd);

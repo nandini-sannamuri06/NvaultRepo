@@ -55,14 +55,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public NVaultUser findByEmailID(String mail, String userName) {
-		return userRepository.findByMail(mail, userName);
+	public NVaultUser findByEmailID(String mail) {
+		return userRepository.findByMail(mail);
 	}
 
 	@Override
-	public NVaultUser updatePassword(String password, String email, String userName) throws Exception {
+	public NVaultUser updatePassword(String password, String email) throws Exception {
 		String encryptedPassword = passwordEncoder.encode(password);
-		NVaultUser user = userRepository.findByMail(email, userName);
+		NVaultUser user = userRepository.findByMail(email);
 		if (user != null) {
 			user.setPassword(encryptedPassword);
 			return userRepository.save(user);

@@ -94,12 +94,12 @@ angular.module('gateway', ['ui.bootstrap']).config(function($httpProvider) {
 			     $scope.close = function () {
 			            $uibModalInstance.dismiss('cancel');
 			         };
-			     $scope.reset = function(email,userName) {
+			     $scope.reset = function(email) {
 			    	 $scope.submitted = true;
-			    	 $http.get('checkEmail',{params: {'email': email,'userName':userName}}).
+			    	 $http.get('checkEmail',{params: {'email': email}}).
 			    	 then(function(response) {
 			    		 console.log("sendMail");
-			    		 $http.post('/resource/sendMail',{'sender':userName,
+			    		 $http.post('/resource/sendMail',{
 			    			 'recipient':email,
 //			    			 Id should be generated and appended and appended to the URL.Once the user is successfully reset the password then need to insert into the DB which is like already reseted.If the user again tries to update need to thrown an Exception like link is already used.
 			    			 'body':'http://localhost:9006/resetPassword.html?id='+Math.random()*9,

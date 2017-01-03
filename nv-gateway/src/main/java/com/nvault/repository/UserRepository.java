@@ -12,9 +12,8 @@ import com.nvault.model.NVaultUser;
 public interface UserRepository extends JpaRepository<NVaultUser, Integer> {
 	NVaultUser findByUsername(String username);
 
-    @Query("select u from NVaultUser u where u.mail=:mail and u.username=:userName")
-	NVaultUser findByMail(@Param("mail")String mail,
-            @Param("userName")String username);
+    @Query("select u from NVaultUser u where u.mail=:mail")
+	NVaultUser findByMail(@Param("mail")String mail);
 
 //    @Modifying(clearAutomatically = true)
 //    @Transactional(rollbackOn =Exception.class)

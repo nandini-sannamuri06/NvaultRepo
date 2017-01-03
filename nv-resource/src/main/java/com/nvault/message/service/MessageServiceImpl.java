@@ -61,4 +61,11 @@ public class MessageServiceImpl implements MessageService {
 		return messageRepository.findByTrash();
 	}
 
+	@Override
+	public void saveMessage(Message message) {
+		// TODO Auto-generated method stub
+		messageRepository.saveAndFlush(message);
+		
+	}
+
 }

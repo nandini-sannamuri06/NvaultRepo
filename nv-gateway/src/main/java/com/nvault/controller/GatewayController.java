@@ -46,9 +46,8 @@ public class GatewayController {
 	}
 
 	@RequestMapping(value = "/checkEmail", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-	public ResponseEntity<String> getEmailDtls(@RequestParam(value = "email") String email,
-			@RequestParam(value = "userName") String userName) {
-		NVaultUser user = userService.findByEmailID(email, userName);
+	public ResponseEntity<String> getEmailDtls(@RequestParam(value = "email") String email) {
+		NVaultUser user = userService.findByEmailID(email);
 		if (user == null) {
 
 			return new ResponseEntity<String>("Email Id is not Exists in DB", HttpStatus.BAD_REQUEST);
@@ -59,14 +58,11 @@ public class GatewayController {
 	@RequestMapping(value = "/resetPwd", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResetPassword> resetPassword(@RequestBody ResetPassword resetPassword) throws Exception {
 		PasswordDetails dtls = pwdDtlsService.getPwdDtls(resetPassword.getId());
-		if (dtls == null) {
-			NVaultUser user = userService.updatePassword(resetPassword.getPassword(), resetPassword.getMail(),
-					resetPassword.getUserName());
+		if (dtls!=null && dtls.getExpired()!=1) {
+			NVaultUser user = userService.updatePassword(resetPassword.getPassword(), dtls.getMail());
 			if (user != null) {
-				PasswordDetails pwdDtls = new PasswordDetails();
-				pwdDtls.setUniqueId(resetPassword.getId());
-				pwdDtls.setExpired(1);
-				pwdDtlsService.savePwdDtls(pwdDtls);
+				dtls.setExpired(1);
+				pwdDtlsService.savePwdDtls(dtls);
 				resetPassword.setSuccess("success");
 				return new ResponseEntity<ResetPassword>(resetPassword, HttpStatus.OK);
 			} else {

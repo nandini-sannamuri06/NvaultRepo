@@ -16,4 +16,6 @@ public interface MessageService {
 	List<Message> getTrashMessages();
 
 	List<Message> getMessagesInclArchieve();
+	
+	void saveMessage(Message message);
 }

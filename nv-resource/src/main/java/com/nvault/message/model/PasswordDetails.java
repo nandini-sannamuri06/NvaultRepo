@@ -1,4 +1,4 @@
-package com.nvault.model;
+package com.nvault.message.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

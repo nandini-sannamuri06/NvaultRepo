@@ -1,19 +1,15 @@
 var app = angular.module('resetPassword',[]).controller('resetController',function($scope,$http,$location){
 	console.log("hi");
-	$scope.reset = function(email,password,userName){
-		console.log(email);
-		console.log(password);
+	$scope.reset = function(password){
 		var id = $location.absUrl().split('=')[1];
-		$http.post('resetPwd',{'mail':email,'password':password,'userName':userName,'id':id
+		$http.post('resetPwd',{'password':password,'id':id
 		 }).then(function(resp){
 			 console.log("resetPassword")
 			 $scope.success=true;
 			 console.log(resp.data.success);
 			 $scope.successMessage="password Updated Successfully";
-			 $scope.email="";
 			 $scope.password="";
 			 $scope.repassword="";
-			 $scope.userName="";
 		 },function(resp){
 			 $scope.error = true;
 			 $scope.success=false
@@ -26,10 +22,10 @@ var app = angular.module('resetPassword',[]).controller('resetController',functi
 	 			} else if (resp.status == 409) {
 	 				$scope.errorMessage = 'Password Reset Link has been expired';
 	 			} 
-			 $scope.email="";
+			
 			 $scope.password="";
 			 $scope.repassword="";
-			 $scope.userName="";
+			 
 		 });
 	}
 });

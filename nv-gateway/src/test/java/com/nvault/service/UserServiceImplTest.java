@@ -68,8 +68,8 @@ public class UserServiceImplTest {
 		user.setPassword("nandini");
 		user.setMail("mail");
 		user.setAccountNonExpired(true);
-		Mockito.when(userRepository.findByMail(Matchers.anyString(), Matchers.anyString())).thenReturn(user);
-		NVaultUser result = userServiceImpl.findByEmailID("xxx", "nnn");
+		Mockito.when(userRepository.findByMail(Matchers.anyString())).thenReturn(user);
+		NVaultUser result = userServiceImpl.findByEmailID("xxx");
 		Assert.assertEquals(result.getPassword(), user.getPassword());
 	}
 	
@@ -77,8 +77,8 @@ public class UserServiceImplTest {
 	public void testUpdatePwdWithNull() throws Exception{
 		String encryptPwd = "xxx123edccc";
 		Mockito.when(passwordEncoder.encode(Matchers.any(CharSequence.class))).thenReturn(encryptPwd);
-		Mockito.when(userRepository.findByMail(Matchers.anyString(), Matchers.anyString())).thenReturn(null);
-		NVaultUser user = userServiceImpl.updatePassword("xxx", "xxx", "yyy");
+		Mockito.when(userRepository.findByMail(Matchers.anyString())).thenReturn(null);
+		NVaultUser user = userServiceImpl.updatePassword("xxx", "xxx");
 	    Assert.assertEquals(user, null);
 	}
 	
@@ -91,9 +91,9 @@ public class UserServiceImplTest {
 		user.setAccountNonExpired(true);
 		String encryptPwd = "xxx123edccc";
 		Mockito.when(passwordEncoder.encode(Matchers.any(CharSequence.class))).thenReturn(encryptPwd);
-		Mockito.when(userRepository.findByMail(Matchers.anyString(), Matchers.anyString())).thenReturn(user);
+		Mockito.when(userRepository.findByMail(Matchers.anyString())).thenReturn(user);
 		Mockito.when(userRepository.save(Matchers.any(NVaultUser.class))).thenReturn(user);
-		NVaultUser result = userServiceImpl.updatePassword("xxx", "xxx", "yyy");
+		NVaultUser result = userServiceImpl.updatePassword("xxx", "xxx");
 	    Assert.assertEquals(encryptPwd, result.getPassword());
 	}
 
