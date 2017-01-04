@@ -96,20 +96,22 @@ ul {
 						<div ngf-no-file-drop>File Drag/Drop is not supported for
 							this browser</div>
 						Files:
-						<ul>
-							<li ng-repeat="fileName in files" style="font: smaller">Uploading
-								:: {{fileName.name}} <span class="progress"
-								ng-show="fileName.progress >= 0">
-									<div style="width: {{fileName.progress"
-										ng-bind="fileName.progress + '%'"></div>
-							</span>
-							</li>
-						</ul>
 
+						<div ng-show="ShowFilesProgress">
+							<ul>
+								<li ng-repeat="fileName in files" style="font: smaller">Uploading
+									:: {{fileName.name}} <span class="progress"
+									ng-show="fileName.progress >= 0">
+										<div style="width: {{fileName.progress}}%"
+											ng-bind="fileName.progress + '%'"></div>
+								</span>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="Clear()"
+					<button type="button" class="btn btn-default" 
 						data-dismiss="modal">Close</button>
 				</div>
 			</div>

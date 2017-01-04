@@ -16,7 +16,7 @@ app
                         $scope.upload([$scope.file]);
                     }
                 });
-                $scope.log = '';
+               
                 
 
                 $scope.upload = function(files) {
@@ -24,7 +24,7 @@ app
                     if (files) {
                         var Size = 0;
                         var fileSize = 0;
-
+                        $scope.ShowFilesProgress = false;
                         for (var i = 0; i < files.length; i++) {
 
                             var file = files[i];
@@ -32,19 +32,18 @@ app
                             fileSize = fileSize + Size;
 
                         }
-                        if (fileSize < 10) {
+                        if (files.length < 5) {
 
-                            if (files.length < 5) {
+                            if (fileSize < 10) {
+                            	$scope.ShowFilesProgress = true;
                                 for (var i = 0; i < files.length; i++) {
                                     var file = files[i];
-                                    alert(file.name);
+                                    
 
                                     Upload
                                         .upload({
                                             url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-                                            fields: {
-                                                'username': $scope.username
-                                            },
+                                            
                                             file: file
                                         })
                                         .progress(
@@ -53,7 +52,7 @@ app
 
                                                     var file = files[i];
                                                     file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-
+                                                  $timeout(function () {$scope.ShowFilesProgress = false }, 2000);
                                                 }
                                             	
                                                 
@@ -77,15 +76,17 @@ app
                                 }
                             } else {
                             	
-                            	$scope.legthIncreased = true;
-                            	
-                            	$scope.length = "Should not upload more than 5 files at a time";
-                            	$timeout(function () { $scope.legthIncreased = false; }, 2000);
+                            	$scope.SizeIncreased = true;
+                            	$scope.Size = "File Upload Size limit should not exceed 10MB";
+                            	$timeout(function () { $scope.SizeIncreased = false; }, 2000);
                             }
                         } else {
-                        	$scope.SizeIncreased = true;
-                        	$scope.Size = "File Upload Size limit should not exceed 10MB";
-                        	$timeout(function () { $scope.SizeIncreased = false; }, 2000);
+                        	
+                        	
+                        	$scope.legthIncreased = true;
+                        	
+                        	$scope.length = "Should not upload more than 5 files at a time";
+                        	$timeout(function () { $scope.legthIncreased = false; }, 2000);
                         }
                     }
 
