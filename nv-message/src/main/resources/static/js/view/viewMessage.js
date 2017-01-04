@@ -4,7 +4,7 @@ var app = angular.module('Messages', [ 'ngAnimate', 'ui.grid', 'ui.grid.moveColu
 angular.module('mailService',[]).factory('mailFactory',function($http){
 	return{
 		sendMail: function(mailObj){
-			$http.post('/messages/mail/send', mailObj)
+			$http.post('/resource/mail/send', mailObj)
 			.then(function(data){
 				console.log("mail send successfully");
 			})

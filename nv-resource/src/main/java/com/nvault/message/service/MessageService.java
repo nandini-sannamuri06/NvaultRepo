@@ -17,5 +17,5 @@ public interface MessageService {
 
 	List<Message> getMessagesInclArchieve();
 	
-	void saveMessage(Message message);
+	Message saveMessage(Message message);
 }

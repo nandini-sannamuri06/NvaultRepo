@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,6 +43,31 @@ public class Message {
 
 	@Column(name = "archieved")
 	private int archieved;
+	
+	@Column(name = "user_id")
+	private Integer user_id;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="status")
+	private EMailSendStatus emailSendStatus;
+	
+	
+
+	public EMailSendStatus getEmailSendStatus() {
+		return emailSendStatus;
+	}
+
+	public void setEmailSendStatus(EMailSendStatus emailSendStatus) {
+		this.emailSendStatus = emailSendStatus;
+	}
+
+	public Integer getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(Integer user_id) {
+		this.user_id = user_id;
+	}
 
 	public int getId() {
 		return id;
@@ -107,7 +134,7 @@ public class Message {
 	}
 
 	public Message(int id, String subject, String recipient, String body, Date date, String sender, int trash,
-			int archieved) {
+			int archieved, int user_id) {
 		super();
 		this.id = id;
 		this.subject = subject;
@@ -117,12 +144,16 @@ public class Message {
 		this.sender = sender;
 		this.trash = trash;
 		this.archieved = archieved;
+		this.user_id=user_id;
 	}
+
+	
 
 	@Override
 	public String toString() {
 		return "Message [id=" + id + ", subject=" + subject + ", recipient=" + recipient + ", body=" + body + ", date="
-				+ date + ", sender=" + sender + ", trash=" + trash + ", archieved=" + archieved + "]";
+				+ date + ", sender=" + sender + ", trash=" + trash + ", archieved=" + archieved + ", user_id=" + user_id
+				+ "]";
 	}
 
 	public Message() {

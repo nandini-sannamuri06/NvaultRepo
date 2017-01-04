@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.nvault.message.model.EMailSendStatus;
 import com.nvault.message.model.Message;
 
 
@@ -29,6 +29,7 @@ public class SmtpMailController {
 	
 	@Autowired
 	MessageService messageService;
+
 	
 	@Value("${spring.mail.username}")
 	String sender;
@@ -39,7 +40,7 @@ public class SmtpMailController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	   NVaultUser user = (NVaultUser)auth.getPrincipal();
  		
-		
+	   System.out.println(" \n came to smtp controller \n");
 
 		try {
 			String[] toAddress = new String[mail.getToAddress().size()];
@@ -51,11 +52,6 @@ public class SmtpMailController {
 			String subject = mail.getSubject();
 			String body = mail.getBody();
 
-			smtpMailSender.send(toAddress, subject, body);
-			
-			
-			
-			
 			Message message=new Message();
 			
 			message.setBody(mail.getBody());
@@ -75,9 +71,14 @@ public class SmtpMailController {
 			
 			message.setSender(sender);
 			
+			message.setEmailSendStatus(EMailSendStatus.SENDBEGIN);
+			
 			
 			// to save mail in db
-			messageService.saveMessage(message);
+			Message insertedMessage=messageService.saveMessage(message);
+			
+			smtpMailSender.send(toAddress, subject, body,insertedMessage);
+
 
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
