@@ -52,7 +52,7 @@ app
 
                                                     var file = files[i];
                                                     file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-                                                  $timeout(function () {$scope.ShowFilesProgress = false }, 2000);
+                                                  //$timeout(function () {$scope.ShowFilesProgress = false }, 2000);
                                                 }
                                             	
                                                 
