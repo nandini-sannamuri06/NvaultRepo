@@ -35,7 +35,6 @@
 .drop-box {
 	background: #F8F8F8;
 	border: 5px dashed #DDD;
-	
 	height: 65px;
 	text-align: center;
 	padding-top: 17px;
@@ -44,6 +43,16 @@
 
 .dragover {
 	border: 5px dashed blue;
+}
+
+.progress div {
+	font-size: smaller;
+	background: orange;
+	width: 0;
+}
+
+ul {
+	list-style-type: none;
 }
 </style>
 <link rel="stylesheet"
@@ -69,30 +78,39 @@
 					<h4 class="modal-title">upload files</h4>
 				</div>
 				<div class="modal-body">
+
 					<div ng-app="fileUpload" ng-controller="MyCtrl">
+						<div ng-show="legthIncreased" style="color: red">{{length}}</div>
+						<div ng-show="SizeIncreased" style="color: red">{{Size}}</div>
 						<!-- <!-- Username<input type="text" ng-model="username"></br></br> -->
 
-			<!-- 			Click to upload Files:
+						<!-- 			Click to upload Files:
 						<div class="button" ngf-select ng-model="file"
 							ngf-multiple="false">upload a file</div>
-						on file change multiple: --> 
-						
+						on file change multiple: -->
+
 						<div ngf-drop ngf-select ng-model="files" class="drop-box"
 							ngf-drag-over-class="dragover" required ngf-multiple="true"
-							ngf-allow-dir="true">Drop
-							pdfs or images here or click to upload</div>
+							ngf-allow-dir="true">Drop files here or click to
+							upload</div>
 						<div ngf-no-file-drop>File Drag/Drop is not supported for
 							this browser</div>
 						Files:
 						<ul>
-							<li ng-repeat="fileName in files" style="font: smaller">{{f.name}}</li>
+							<li ng-repeat="fileName in files" style="font: smaller">Uploading
+								:: {{fileName.name}} <span class="progress"
+								ng-show="fileName.progress >= 0">
+									<div style="width: {{fileName.progress"
+										ng-bind="fileName.progress + '%'"></div>
+							</span>
+							</li>
 						</ul>
-						Upload Log:
-						<pre>{{log}}</pre>
+
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default" onclick="Clear()"
+						data-dismiss="modal">Close</button>
 				</div>
 			</div>
 

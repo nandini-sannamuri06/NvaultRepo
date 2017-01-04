@@ -17,6 +17,7 @@ app
                     }
                 });
                 $scope.log = '';
+                
 
                 $scope.upload = function(files) {
 
@@ -48,15 +49,14 @@ app
                                         })
                                         .progress(
                                             function(evt) {
-                                                var progressPercentage = parseInt(100.0 *
-                                                    evt.loaded /
-                                                    evt.total);
-                                                $scope.log = 'progress: ' +
-                                                    progressPercentage +
-                                                    '% ' +
-                                                    evt.config.file.name +
-                                                    '\n' +
-                                                    $scope.log;
+                                            	for (var i = 0; i < files.length; i++) {
+
+                                                    var file = files[i];
+                                                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+
+                                                }
+                                            	
+                                                
                                             })
                                         .success(
                                             function(
@@ -76,15 +76,25 @@ app
                                             });
                                 }
                             } else {
-                                alert("");
+                            	
+                            	$scope.legthIncreased = true;
+                            	
+                            	$scope.length = "Should not upload more than 5 files at a time";
+                            	$timeout(function () { $scope.legthIncreased = false; }, 2000);
                             }
                         } else {
-                            alert("Size limit Exceeded");
-
+                        	$scope.SizeIncreased = true;
+                        	$scope.Size = "File Upload Size limit should not exceed 10MB";
+                        	$timeout(function () { $scope.SizeIncreased = false; }, 2000);
                         }
                     }
 
 
                 };
+                
+                
             }
+            
         ]);
+
+ 
