@@ -46,7 +46,7 @@ public class SmtpMailController {
 			String[] toAddress = new String[mail.getToAddress().size()];
 			int i = 0;
 			for (com.nvault.controller.EmailToAddress address : mail.getToAddress()) {
-				toAddress[i] = address.getText();
+				toAddress[i] = address.getEmailId();
 				i++;
 			}
 			String subject = mail.getSubject();

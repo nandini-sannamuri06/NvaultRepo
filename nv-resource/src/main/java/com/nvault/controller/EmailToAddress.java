@@ -2,24 +2,19 @@ package com.nvault.controller;
 
 public class EmailToAddress {
 
-	String text;
+	String emailId;
 
 	public EmailToAddress() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public EmailToAddress(String text) {
-		super();
-		this.text = text;
+	public String getEmailId() {
+		return emailId;
 	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 
 }

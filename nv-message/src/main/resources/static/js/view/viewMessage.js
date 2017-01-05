@@ -1,4 +1,35 @@
-var app = angular.module('Messages', [ 'ngAnimate', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.bootstrap', 'ui.grid.edit','ui.grid.pagination','ngTagsInput','mailService' ])
+var app = angular.module('Messages', [ 'ngAnimate', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.bootstrap', 'ui.grid.edit','ui.grid.pagination','ngTagsInput','ngSanitize', 'ui.select', 'mailService' ])
+
+app.filter('propsFilter', function() {
+	  return function(items, props) {
+	    var out = [];
+
+	    if (angular.isArray(items)) {
+	      items.forEach(function(item) {
+	        var itemMatches = false;
+
+	        var keys = Object.keys(props);
+	        for (var i = 0; i < keys.length; i++) {
+	          var prop = keys[i];
+	          var text = props[prop].toLowerCase();
+	          if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+	            itemMatches = true;
+	            break;
+	          }
+	        }
+
+	        if (itemMatches) {
+	          out.push(item);
+	        }
+	      });
+	    } else {
+	      // Let the output be the input untouched
+	      out = items;
+	    }
+
+	    return out;
+	  };
+});
 
 // Venu
 angular.module('mailService',[]).factory('mailFactory',function($http){
@@ -6,9 +37,11 @@ angular.module('mailService',[]).factory('mailFactory',function($http){
 		sendMail: function(mailObj){
 			$http.post('/resource/mail/send', mailObj)
 			.then(function(data){
-				console.log("mail send successfully");
+				console.log("mail sent successfully");
 			})
-			.catch(mailSenfFailMsg);
+			.catch(function(data){
+				console.log("mail not sent successfully");
+			});
 		},
 	}
 });
@@ -17,7 +50,7 @@ app.controller('RowEditCtrl', RowEditCtrl);
 app.service('RowEditor', RowEditor);
 
 // venu
-app.controller('myCtrl', function($scope, $http, mailFactory) {
+app.controller('myCtrl', function($scope, $http, $timeout, mailFactory) {
     $scope.tags = [
 // { text: 'vmeesala@nisum.com' },
 // { text: 'skaranam@nisum.com' },
@@ -27,10 +60,37 @@ app.controller('myCtrl', function($scope, $http, mailFactory) {
          return $http.get('/tags?query=' + query);
     };
     
+    $scope.multipleDemo = {};
+    
+    
     $scope.sendMail = function(mailObj){
-    	mailObj.toAddress = $scope.tags;
+    	mailObj.toAddress = $scope.multipleDemo.selectedPeople;
     	mailFactory.sendMail(mailObj);
 	}
+    
+    $scope.tagTransform = function (newTag) {
+        var item = {
+          firstName: newTag,
+          emailId: newTag
+        };
+        return item;
+      };
+
+
+      $scope.counter = 0;
+      $scope.someFunction = function (item, model){
+        $scope.counter++;
+        $scope.eventResult = {item: item, model: model};
+      };
+
+      $scope.person = {};
+
+      $http.get('/resource/allContacts').success(function(data) {
+    	  $scope.people = data;
+    	});
+      
+     
+    
 });
 
 getMessagesCtrl.$inject = [ '$scope', '$http', '$modal', 'RowEditor', 'uiGridConstants' ];
