@@ -17,10 +17,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import com.nvault.message.model.Message;
 import com.nvault.message.repository.MessageRepository;
+import com.nvault.model.NVaultUser;
 
 
 
@@ -41,35 +44,42 @@ public class MessageServiceTest {
 	}
 	
 	@Test
-	public void testGetMessages(Integer userId){
+	public void testGetMessages(){
+		Message message = new Message();
 		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
-		Collection<Message> messageObjs = messageServiceImpl.listAllMessages(userId);
+		Collection<Message> messageObjs = messageServiceImpl.listAllMessages(Matchers.anyInt());
 		Assert.assertEquals(messageObjs.size(), 0);
 	}
 	
 	@Test
-	public void testGetAllMessages(Integer userId){
+	public void testGetAllMessages(){
+		Message message = new Message();
+		
 		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
-		Collection<Message> messageObjs = messageServiceImpl.getMessagesInclArchieve(userId);
+		Collection<Message> messageObjs = messageServiceImpl.getMessagesInclArchieve(Matchers.anyInt());
 		Assert.assertEquals(messageObjs.size(), 0);
 	}
 	
 	@Test
-	public void testTrashMessages(Integer userId){
+	public void testTrashMessages(){
+		Message message = new Message();
+		
 		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
-		Collection<Message> messageObjs = messageServiceImpl.getTrashMessages(userId);
+		Collection<Message> messageObjs = messageServiceImpl.getTrashMessages(Matchers.anyInt());
 		Assert.assertEquals(messageObjs.size(), 0);
 	}
 	
 	@Test
-	public void testArchievedMessages(Integer userId){
+	public void testArchievedMessages(){
+		Message message = new Message();
 		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
-		Collection<Message> messageObjs = messageServiceImpl.getArchiveMessages(userId);
+		Collection<Message> messageObjs = messageServiceImpl.getArchiveMessages(Matchers.anyInt());
 		Assert.assertEquals(messageObjs.size(), 0);
 	}
 	
 	@Test
 	public void updateMessageTrashWithNull() throws Exception {
+		
 		Mockito.when(messageRepository.findOne(Matchers.anyInt())).thenReturn(null);
 		Message message = messageServiceImpl.updateMessage(10);
 		
