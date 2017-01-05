@@ -25,8 +25,7 @@ public class DocApplication {
 			http
 				.httpBasic().and()
 				.authorizeRequests()
-					.antMatchers("/index.html", "/").permitAll()
-					.anyRequest().hasRole("USER");
+					.antMatchers("/index.html", "/*").permitAll();
 			// @formatter:on
 		}
 	}

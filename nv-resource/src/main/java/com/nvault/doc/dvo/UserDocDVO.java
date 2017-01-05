@@ -1,6 +1,7 @@
 package com.nvault.doc.dvo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 public class UserDocDVO implements Serializable {
@@ -17,6 +18,10 @@ public class UserDocDVO implements Serializable {
 	private int trash;
 
 	private int userId;
+	
+	private long size;
+	
+	private Date modifiedDate;
 
 	public UserDocDVO() {
 	}
@@ -68,6 +73,24 @@ public class UserDocDVO implements Serializable {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
+
+	public long getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
+	}
+
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	
 
 
 	

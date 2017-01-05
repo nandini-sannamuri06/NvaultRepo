@@ -47,6 +47,8 @@ public class NVaultUser implements UserDetails {
 
 	@Column(name = "mail")
 	private String mail;
+	
+	private String bucketName;
 
 	@NotNull
 	private boolean accountNonExpired = true;
@@ -138,6 +140,14 @@ public class NVaultUser implements UserDetails {
 
 	public void setDocuments(List<UserDoc> documents) {
 		this.documents = documents;
+	}
+
+	public String getBucketName() {
+		return bucketName;
+	}
+
+	public void setBucketName(String bucketName) {
+		this.bucketName = bucketName;
 	}
 	
 

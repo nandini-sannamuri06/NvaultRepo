@@ -42,7 +42,7 @@ public class NVaultUser implements UserDetails {
 	@Column
 	private String password;
 
-	@Column(name = "mail")
+	@Column(unique=true)
 	private String mail;
 
 	@NotNull
@@ -51,6 +51,17 @@ public class NVaultUser implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "userRole", joinColumns = @JoinColumn(name = "accountId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "role_id"))
 	public Set<Role> roles;
+	
+	@NotNull
+	private String bucketName;
+
+	public String getBucketName() {
+		return bucketName;
+	}
+
+	public void setBucketName(String bucketName) {
+		this.bucketName = bucketName;
+	}
 
 	public int getId() {
 		return id;

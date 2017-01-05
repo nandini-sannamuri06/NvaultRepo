@@ -48,6 +48,7 @@ public class UserRegisterControllerTest {
 	NVaultUser user = new NVaultUser();
 	user.setId(10);
 	user.setUsername("xxx");
+	user.setMail("xxx@gmail.com");
 	Mockito.when(userService.saveUser(Matchers.any(NVaultUser.class))).thenReturn(user);
 	String json = new ObjectMapper().writeValueAsString(user);
 	mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON_VALUE).content(json))
@@ -60,6 +61,7 @@ public class UserRegisterControllerTest {
 		NVaultUser user = new NVaultUser();
 		user.setId(10);
 		user.setUsername("xxx");
+		user.setMail("xxx@gmail.com");
 		Mockito.when(userService.findById(Matchers.anyInt())).thenReturn(null);
 		Mockito.when(userService.saveUser(Matchers.any(NVaultUser.class))).thenReturn(null);
 		String json = new ObjectMapper().writeValueAsString(user);
@@ -72,6 +74,7 @@ public class UserRegisterControllerTest {
 		NVaultUser user = new NVaultUser();
 		user.setId(10);
 		user.setUsername("xxx");
+		user.setMail("xxx@gmail.com");
 		Mockito.when(userService.findById(Matchers.anyInt())).thenReturn(user);
 		String json = new ObjectMapper().writeValueAsString(user);
 		mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON_VALUE).content(json))

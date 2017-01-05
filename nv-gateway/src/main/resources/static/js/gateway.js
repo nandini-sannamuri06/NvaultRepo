@@ -72,18 +72,33 @@ angular.module('gateway', ['ui.bootstrap']).config(function($httpProvider) {
 			             username: self.signup.username,
 			             password:self.signup.password,
 			             mail: self.signup.email,
-			             
-			          
 			         }).
 			         success(function(data, status, headers) {
-			        	 self.SignupSuccess = true;
-			             self.regSuccess = "User has been added successfully  ";
-			             self.toLogin = "   here to login"; 
-			        	   self.SignupSuccess = true;
-			        	   self.reset();
-			        	   $timeout(function () { self.SignupSuccess = false; }, 2000); 
-			        	      });
+
+			    		 console.log("createBucket"+data.bucketName);
+			    		 $http.post('/resource/createBucket',{
+			    			 'bucketName':data.bucketName,
+			    			 'userName': self.signup.username
+			    		 }).then(function(resp){
+			    			 self.SignupSuccess = true;
+				             self.regSuccess = "User has been added successfully  ";
+				             self.toLogin = "   here to login"; 
+				        	   self.SignupSuccess = true;
+				        	   self.reset();
+				        	   $timeout(function () { self.SignupSuccess = false; }, 6000);
+			    		 },function(resp){
+			    			 $scope.SignupSuccess=false
+					 			if (response.status === 0) {
+					 				$scope.error = 'No connection. Verify application is running.';
+					 			} else if (response.status == 400) {
+					 				$scope.error = 'Bucket has not been created';
+					 			} else if (response.status == 403) {
+					 				$scope.error = 'Dont have Permision to NVault Application';
+					 			} 
+					 			 $timeout(function () { $scope.forgotError = false; }, 5000);
+			    		 });
 		
+	});
 	}
 	self.forgot = function()
 	{
@@ -101,7 +116,10 @@ angular.module('gateway', ['ui.bootstrap']).config(function($httpProvider) {
 			    		 console.log("sendMail");
 			    		 $http.post('/resource/sendMail',{
 			    			 'recipient':email,
-//			    			 Id should be generated and appended and appended to the URL.Once the user is successfully reset the password then need to insert into the DB which is like already reseted.If the user again tries to update need to thrown an Exception like link is already used.
+// Id should be generated and appended and appended to the URL.Once the user is
+// successfully reset the password then need to insert into the DB which is like
+// already reseted.If the user again tries to update need to thrown an Exception
+// like link is already used.
 			    			 'body':'http://localhost:9006/resetPassword.html?id='+Math.random()*9,
 			    			 'subject':'Reset Password'
 			    		 }).then(function(resp){
