@@ -29,7 +29,7 @@ public class UserRegisterController {
 			return new ResponseEntity<NVaultUser>(HttpStatus.BAD_REQUEST);
 		} else {
 			String bucketName = user.getMail().split("@")[0];
-			user.setBucketName(bucketName+user.getId());
+			user.setBucketName(bucketName);
 			NVaultUser createdEmployee = userService.saveUser(user);
 			if (createdEmployee != null) {
 				return new ResponseEntity<NVaultUser>(createdEmployee, HttpStatus.CREATED);

@@ -67,7 +67,7 @@ app
                                     $scope.ShowFilesProgress = true;
                                     Upload
                                         .upload({
-                                            url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+                                            url: '/resource/uploadDocs',
 
                                             file: file
                                         })

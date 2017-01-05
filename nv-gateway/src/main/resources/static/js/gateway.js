@@ -77,7 +77,7 @@ angular.module('gateway', ['ui.bootstrap']).config(function($httpProvider) {
 
 			    		 console.log("createBucket"+data.bucketName);
 			    		 $http.post('/resource/createBucket',{
-			    			 'bucketName':data.bucketName,
+			    			 'bucketName':data.bucketName+data.id,
 			    			 'userName': self.signup.username
 			    		 }).then(function(resp){
 			    			 self.SignupSuccess = true;
