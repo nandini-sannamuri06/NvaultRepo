@@ -37,29 +37,29 @@ public class MessageControllerTest {
 	}
 
 	@Test
-	public void testListMessages() throws Exception {
-		Mockito.when(messageService.listAllMessages()).thenReturn(new ArrayList<Message>());
+	public void testListMessages(Integer userId) throws Exception {
+		Mockito.when(messageService.listAllMessages(userId)).thenReturn(new ArrayList<Message>());
 		mockMvc.perform(get("/getMessages")).andExpect(status().isOk())
 				.andExpect(content().contentType("application/json;charset=UTF-8"));
 	}
 	
 	@Test
-	public void testListTrashMessages() throws Exception {
-		Mockito.when(messageService.getTrashMessages()).thenReturn(new ArrayList<Message>());
+	public void testListTrashMessages(Integer userId) throws Exception {
+		Mockito.when(messageService.getTrashMessages(userId)).thenReturn(new ArrayList<Message>());
 		mockMvc.perform(get("/getTrashMessages")).andExpect(status().isOk())
 				.andExpect(content().contentType("application/json;charset=UTF-8"));
 	}
 	
 	@Test
-	public void testListMessagesInclArc() throws Exception {
-		Mockito.when(messageService.getMessagesInclArchieve()).thenReturn(new ArrayList<Message>());
+	public void testListMessagesInclArc(Integer userId) throws Exception {
+		Mockito.when(messageService.getMessagesInclArchieve(userId)).thenReturn(new ArrayList<Message>());
 		mockMvc.perform(get("/AllMessagesInclArchieve")).andExpect(status().isOk())
 				.andExpect(content().contentType("application/json;charset=UTF-8"));
 	}
 	
 	@Test
-	public void testListArchievedMessages() throws Exception {
-		Mockito.when(messageService.getArchiveMessages()).thenReturn(new ArrayList<Message>());
+	public void testListArchievedMessages(Integer userId) throws Exception {
+		Mockito.when(messageService.getArchiveMessages(userId)).thenReturn(new ArrayList<Message>());
 		mockMvc.perform(get("/getArchiveMessages")).andExpect(status().isOk())
 				.andExpect(content().contentType("application/json;charset=UTF-8"));
 	}

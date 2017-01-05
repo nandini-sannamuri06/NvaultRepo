@@ -41,30 +41,30 @@ public class MessageServiceTest {
 	}
 	
 	@Test
-	public void testGetMessages(){
+	public void testGetMessages(Integer userId){
 		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
-		Collection<Message> messageObjs = messageServiceImpl.listAllMessages();
+		Collection<Message> messageObjs = messageServiceImpl.listAllMessages(userId);
 		Assert.assertEquals(messageObjs.size(), 0);
 	}
 	
 	@Test
-	public void testGetAllMessages(){
+	public void testGetAllMessages(Integer userId){
 		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
-		Collection<Message> messageObjs = messageServiceImpl.getMessagesInclArchieve();
+		Collection<Message> messageObjs = messageServiceImpl.getMessagesInclArchieve(userId);
 		Assert.assertEquals(messageObjs.size(), 0);
 	}
 	
 	@Test
-	public void testTrashMessages(){
+	public void testTrashMessages(Integer userId){
 		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
-		Collection<Message> messageObjs = messageServiceImpl.getTrashMessages();
+		Collection<Message> messageObjs = messageServiceImpl.getTrashMessages(userId);
 		Assert.assertEquals(messageObjs.size(), 0);
 	}
 	
 	@Test
-	public void testArchievedMessages(){
+	public void testArchievedMessages(Integer userId){
 		Mockito.when(messageRepository.findAll()).thenReturn(new ArrayList<Message>());
-		Collection<Message> messageObjs = messageServiceImpl.getArchiveMessages();
+		Collection<Message> messageObjs = messageServiceImpl.getArchiveMessages(userId);
 		Assert.assertEquals(messageObjs.size(), 0);
 	}
 	

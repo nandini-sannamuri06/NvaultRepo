@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import com.nvault.contact.model.Contact;
 import com.nvault.message.model.Message;
 
 import com.nvault.message.service.MessageService;
+import com.nvault.model.NVaultUser;
 
 @RestController
 public class MessageController {
@@ -29,14 +32,18 @@ public class MessageController {
 	@RequestMapping(value = "/getMessages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 
 	public ResponseEntity<List<Message>> listAllMessages() {
-		List<Message> messages = messageService.listAllMessages();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    NVaultUser user = (NVaultUser)auth.getPrincipal();
+		List<Message> messages = messageService.listAllMessages(user.getId());
 		return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/AllMessagesInclArchieve", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 
 	public ResponseEntity<List<Message>> getMessages() {
-		List<Message> messages = messageService.getMessagesInclArchieve();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    NVaultUser user = (NVaultUser)auth.getPrincipal();
+		List<Message> messages = messageService.getMessagesInclArchieve(user.getId());
 		return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
 	}
 
@@ -60,14 +67,18 @@ public class MessageController {
 	@RequestMapping(value = "/getArchiveMessages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 
 	public ResponseEntity<List<Message>> listAllArchiveMsgs() {
-		List<Message> messages = messageService.getArchiveMessages();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    NVaultUser user = (NVaultUser)auth.getPrincipal();
+		List<Message> messages = messageService.getArchiveMessages(user.getId());
 		return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/getTrashMessages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 
 	public ResponseEntity<List<Message>> listAllTrashMessages() {
-		List<Message> messages = messageService.getTrashMessages();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    NVaultUser user = (NVaultUser)auth.getPrincipal();
+		List<Message> messages = messageService.getTrashMessages(user.getId());
 		return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
 	}
 

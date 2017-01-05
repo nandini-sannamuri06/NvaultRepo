@@ -5,17 +5,17 @@ import com.nvault.message.model.Message;
 
 public interface MessageService {
 
-	List<Message> listAllMessages();
+	List<Message> listAllMessages(Integer userId);
 
 	Message updateMessage(Integer id);
 
 	Message MessageArchieve(Integer id);
 
-	List<Message> getArchiveMessages();
+	List<Message> getArchiveMessages(Integer userId);
 
-	List<Message> getTrashMessages();
+	List<Message> getTrashMessages(Integer userId);
 
-	List<Message> getMessagesInclArchieve();
+	List<Message> getMessagesInclArchieve(Integer userId);
 	
 	Message saveMessage(Message message);
 }

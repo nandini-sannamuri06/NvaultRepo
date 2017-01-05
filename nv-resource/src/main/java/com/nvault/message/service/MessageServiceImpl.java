@@ -19,15 +19,15 @@ public class MessageServiceImpl implements MessageService {
 	MessageRepository messageRepository;
 
 	@Override
-	public List<Message> listAllMessages() {
+	public List<Message> listAllMessages(Integer userId) {
 
-		return messageRepository.getAllMessages();
+		return messageRepository.getAllMessages(userId);
 	}
 
 	@Override
-	public List<Message> getMessagesInclArchieve() {
+	public List<Message> getMessagesInclArchieve(Integer userId) {
 
-		return messageRepository.getMessagesInclArchie();
+		return messageRepository.getMessagesInclArchie(userId);
 	}
 
 	public Message updateMessage(Integer id) {
@@ -51,14 +51,14 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public List<Message> getArchiveMessages() {
+	public List<Message> getArchiveMessages(Integer userId) {
 
-		return messageRepository.findByArchieved();
+		return messageRepository.findByArchieved(userId);
 	}
 
 	@Override
-	public List<Message> getTrashMessages() {
-		return messageRepository.findByTrash();
+	public List<Message> getTrashMessages(Integer userId) {
+		return messageRepository.findByTrash(userId);
 	}
 
 	@Override
