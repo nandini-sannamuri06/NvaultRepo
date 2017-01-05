@@ -1,0 +1,24 @@
+{
+  "name": "select",
+  "version": "1.1.0",
+  "description": "Programmatically select the text of a HTML element",
+  "license": "MIT",
+  "main": "dist/select.js",
+  "keywords": [
+    "range",
+    "select",
+    "selecting",
+    "selection"
+  ],
+  "homepage": "https://github.com/zenorocha/select",
+  "_release": "1.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.0",
+    "commit": "14dfea00f4121b3d7995eb68fdbd9051e09b0b27"
+  },
+  "_source": "https://github.com/zenorocha/select.git",
+  "_target": "^1.1.0",
+  "_originalSource": "select",
+  "_direct": true
+}
