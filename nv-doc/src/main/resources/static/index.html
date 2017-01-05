@@ -82,7 +82,8 @@ ul {
 					<div ng-app="fileUpload" ng-controller="MyCtrl">
 						<div ng-show="legthIncreased" style="color: red">{{length}}</div>
 						<div ng-show="SizeIncreased" style="color: red">{{Size}}</div>
-					
+					<div ng-show="fileFormat" style="color: red">{{File}}</div>
+					<div ng-show="fileFormat" style="color: red">{{Type}}</div>
 
 						<div ngf-drop ngf-select ng-model="files" class="drop-box"
 							ngf-drag-over-class="dragover" accept="image/*,.doc,.xslx,application/pdf,.zip,.rar,.mp4,.avi,.wmv,.mpeg" ngf-multiple="true"
@@ -90,9 +91,10 @@ ul {
 							upload</div>
 						<div ngf-no-file-drop>File Drag/Drop is not supported for
 							this browser</div>
-						Files:
+						
 
 						<div ng-show="ShowFilesProgress">
+						Files:
 							<ul>
 								<li ng-repeat="fileName in files" style="font: smaller">Uploading
 									:: {{fileName.name}} <span class="progress"
