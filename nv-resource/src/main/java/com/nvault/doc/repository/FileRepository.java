@@ -18,4 +18,7 @@ public interface FileRepository extends JpaRepository<UserDoc, Integer>{
 	@Query("from UserDoc u  where u.trash=1")
 	List<UserDoc> findByTrash();
 
+	@Query("from UserDoc u  where u.trash=0 and u.archive=0")
+	List<UserDoc> findAllDocs();
+
 }

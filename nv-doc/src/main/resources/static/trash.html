@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html ng-app="Docs">
+
+<head>
+<meta charset="utf-8" />
+<title>Nisum Drop Box App</title>
+<base href="docs" />
+<!-- Bootstrap Core CSS -->
+<link rel="styleSheet"
+	href="http://ui-grid.info/release/ui-grid.min.css" />
+<link rel="styleSheet" href="css/style-grid.css" />
+<link data-require="bootstrap-css@3.1.1" data-semver="3.1.1"
+	rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
+<script data-require="ui-bootstrap@0.13.3" data-semver="0.13.3"
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.3/ui-bootstrap-tpls.min.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+<script src="http://ui-grid.info/release/ui-grid.js"></script>
+<link rel="stylesheet" href="http://ui-grid.info/release/ui-grid.css"
+	type="text/css" />
+<style type="text/css">
+[ng\:cloak], [ng-cloak], .ng-cloak {
+	display: none !important;
+}
+</style>
+
+<script type="text/javascript" src="js/trash.js"></script>
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+<!-- JS -->
+
+</head>
+
+<body>
+	<div class="container" ng-controller="DocsTrashCtrl">
+		<link rel='stylesheet prefetch'
+			href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
+		<div class="mail-box" align="left"
+		style="width: 850px; position: relative; top: 35px; height: 50">
+			<aside class="sm-side" >
+				<div class="inbox-body">
+					<ul class="inbox-nav inbox-divider">
+						
+						<li><a href="index.html"><i class="fa fa-inbox"></i>
+								Home </a></li>
+
+						<li><a href="archive.html"><i class="fa fa-bookmark-o"></i>
+								Archie</a></li>
+
+						<li><a href="trash.html"><i class=" fa fa-trash-o"></i>
+								Trash</a></li>
+					</ul>
+				</div>
+				<div class="inbox-body text-center">
+					<div class="btn-group">
+						<a class="btn mini btn-primary" ng-show="showData" ng-click="createFolder()"><span> New Folder</span>
+						</a>
+					</div>
+					<div class="btn-group">
+						<a class="btn mini btn-success" ng-show="showData" ng-click="upload()"><span> Upload</span>
+						</a>
+					</div>
+					<div class="btn-group">
+						<a class="btn mini btn-info" ng-show="showData" ng-click="Share()"> <span> Share</span>
+						</a>
+					</div>
+				</div>
+
+			</aside>
+			<aside class="lg-side">
+				<div class="inbox-head">
+					<h3>Trash Docs</h3>
+				</div>
+				<div class="inbox-body">
+					<div ng-controller="DocsTrashCtrl as vmt" >
+						<br />
+						<div id="serviceGrid" ui-grid-move-columns ui-grid-pagination
+							ui-grid-selection ui-grid-resize-columns ui-grid-pinning
+							ui-grid-exporter ui-grid-auto-resize ui-grid-pagination
+							ui-grid-edit ui-grid="vmt.serviceGrid" class="influxGrid"
+							style="height: 300px;"></div>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</div>
+
+</body>
+
+</html>

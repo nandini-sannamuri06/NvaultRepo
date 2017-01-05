@@ -2,10 +2,16 @@ package com.nvault.doc.controller;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,32 +90,41 @@ public class DocController {
 		}
 		return docsResults;
 	}
+	
+	@RequestMapping(value = "/getAllDocs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<UserDocDVO> listAllDocs() {
+		List<UserDocDVO> docsResults = new ArrayList<>();
+		List<UserDoc> docs = documentService.getAllDocs();
+		for (UserDoc userDoc : docs) {
+			UserDocDVO userDocDVO = modelMapper.map(userDoc, UserDocDVO.class);
+			docsResults.add(userDocDVO);
+		}
+		return docsResults;
+	}
+	
+	@RequestMapping(value = "/download/{id}", method = RequestMethod.GET)
+    public void download(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+		UserDoc deleteDoc = documentService.getDoc(id);
+        File file = new File(deleteDoc.getPath().trim()+ "/"+deleteDoc.getFileName().trim());
+        InputStream is = new FileInputStream(file);
+ 
+        // MIME type of the file
+        response.setContentType("application/octet-stream");
+        // Response header
+        response.setHeader("Content-Disposition", "attachment; filename=\""
+                + file.getName() + "\"");
+        // Read from the file and write into the response
+        OutputStream os = response.getOutputStream();
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = is.read(buffer)) != -1) {
+            os.write(buffer, 0, len);
+        }
+        os.flush();
+        os.close();
+        is.close();
+    }
 
 	
-	/*Doc Upload*/
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	  @ResponseBody
-	  public ResponseEntity<?> uploadFile(
-	      @RequestParam("file") MultipartFile uploadfile) {
-	    try {
-	      // Get the filename and build the local file path
-	      String filename = uploadfile.getOriginalFilename();
-	      String directory = env.getProperty("nv-path");
-	      String filepath = Paths.get(directory, filename).toString();
-	      // Save the file locally
-	      UserDoc userDoc=new UserDoc();
-	      userDoc.setFileName(filename);
-	      userDoc.setPath(directory);
-	      BufferedOutputStream stream =
-	          new BufferedOutputStream(new FileOutputStream(new File(filepath)));
-	      stream.write(uploadfile.getBytes());
-	      stream.close();
-	      docService.saveFile(userDoc);
-	    }
-	    catch (Exception e) {
-	      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	    }
-	    
-	    return new ResponseEntity<>(HttpStatus.OK);
-	  } // method uploadFile
 }

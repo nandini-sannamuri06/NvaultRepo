@@ -51,4 +51,14 @@ public class DocumentServiceImpl implements DocumentService {
 		return fileRepository.findByTrash();
 	}
 
+	@Override
+	public UserDoc getDoc(Integer id) {
+		return fileRepository.findOne(id);
+	}
+
+	@Override
+	public List<UserDoc> getAllDocs() {
+		return fileRepository.findAllDocs();
+	}
+
 }

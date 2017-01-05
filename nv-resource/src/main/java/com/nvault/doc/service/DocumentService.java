@@ -13,5 +13,9 @@ public interface DocumentService {
 	List<UserDoc> getArchiveDocs();
 
 	List<UserDoc> getTrashDocs();
+	
+	UserDoc getDoc(Integer id);
+
+	List<UserDoc> getAllDocs();
 
 }
