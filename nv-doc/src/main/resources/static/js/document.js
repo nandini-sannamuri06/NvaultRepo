@@ -31,7 +31,7 @@ app
                             fileSize = fileSize + Size;
 
                         }
-                        if (files.length < 5) {
+                        if (files.length <= 5) {
 
                             if (fileSize < 10) {
 

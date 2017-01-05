@@ -69,8 +69,8 @@ public class MessageControllerTest {
 		Mockito.when(messageService.getArchiveMessages(Matchers.anyInt())).thenReturn(new ArrayList<Message>());
 		mockMvc.perform(get("/getArchiveMessages")).andExpect(status().isOk())
 				.andExpect(content().contentType("application/json;charset=UTF-8"));
-	}
-	*/
+	}*/
+	
 	@Test
 	public void updateMessageArchieveWithNull() throws Exception {
 		Mockito.when(messageService.MessageArchieve(Matchers.anyInt())).thenReturn(null);
