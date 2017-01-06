@@ -93,15 +93,8 @@ app
                                                 status,
                                                 headers,
                                                 config) {
-                                                $timeout(function() {
-                                                    $scope.log = 'file: ' +
-                                                        config.file.name +
-                                                        ', Response: ' +
-                                                        JSON
-                                                        .stringify(data) +
-                                                        '\n' +
-                                                        $scope.log;
-                                                });
+                                              $scope.successFlag=true;
+                                              $scope.successMessage = data;
                                             });
 
                                 }

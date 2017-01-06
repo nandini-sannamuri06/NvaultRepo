@@ -36,5 +36,9 @@ spring:
     redis:
          host: localhost
          port: 6379
+         
+    http:
+          multipart:
+                    max-file-size: 10Mb
      
   

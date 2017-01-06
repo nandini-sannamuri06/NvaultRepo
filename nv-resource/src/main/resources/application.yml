@@ -31,7 +31,11 @@ spring:
                         socketFactory:
                                   port: 465
                                   class: javax.net.ssl.SSLSocketFactory
-                                  fallback: false 
+                                  fallback: false
+    http:
+          multipart:
+                    enabled: true
+                    max-file-size: 10Mb
             
 nv-path: /javed_backup/uploads
 accessKey : AKIAJN6O4XIP2IDVE2EQ
@@ -39,6 +43,5 @@ securityKey : s/pg8vxxbENbAG9G18T+h8+UMCgLx+vt8lnCzhaU
 homePath : home/
 trashPath : trash/
 archivePath : archive/  
-
-multipart: 
-   enabled: true
+   
+   
