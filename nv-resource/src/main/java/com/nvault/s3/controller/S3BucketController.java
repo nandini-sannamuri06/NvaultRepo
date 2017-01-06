@@ -61,7 +61,7 @@ public class S3BucketController {
 
 	}
 
-	@RequestMapping(value = "/fetchDocs", method = RequestMethod.GET)
+	@RequestMapping(value = "/fetchDocs", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	//Need to write logic for fetching the Folders.
 	public ResponseEntity<List<UserDocDVO>> getDocs(@RequestParam("folderName") String folderName) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -87,7 +87,7 @@ public class S3BucketController {
 		return new ResponseEntity<List<UserDocDVO>>(userDocs, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/uploadDocs", method = RequestMethod.POST)
+	@RequestMapping(value = "/uploadDocs", method = RequestMethod.POST,produces = MediaType.TEXT_HTML_VALUE)
 	public ResponseEntity<String> uploadDocs(@RequestParam("file") MultipartFile f) throws IOException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
@@ -116,8 +116,8 @@ public class S3BucketController {
 
 	}
 
-	@RequestMapping(value = "/updateDocs", method = RequestMethod.GET)
-	public ResponseEntity<String> moveToTrash(@RequestParam("fielName") String fileName, @RequestParam("folderName") String folderName) {
+	@RequestMapping(value = "/updateDocs", method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<String> updateDocs(@RequestParam("fielName") String fileName, @RequestParam("folderName") String folderName) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
 		S3Bucket bucket = bucketService.findByuserName(user.getUsername());
