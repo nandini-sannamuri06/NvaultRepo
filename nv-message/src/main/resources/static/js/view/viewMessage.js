@@ -23,7 +23,7 @@ app.filter('propsFilter', function() {
 	        }
 	      });
 	    } else {
-	      // Let the output be the input untouched
+	    
 	      out = items;
 	    }
 
@@ -31,7 +31,7 @@ app.filter('propsFilter', function() {
 	  };
 });
 
-// Venu
+
 angular.module('mailService',[]).factory('mailFactory',function($http){
 	return{
 		sendMail: function(mailObj){
@@ -49,12 +49,10 @@ app.controller('getMessagesCtrl', getMessagesCtrl);
 app.controller('RowEditCtrl', RowEditCtrl);
 app.service('RowEditor', RowEditor);
 
-// venu
+
 app.controller('myCtrl', function($scope, $http, $timeout, mailFactory) {
     $scope.tags = [
-// { text: 'vmeesala@nisum.com' },
-// { text: 'skaranam@nisum.com' },
-// { text: 'javeed@nisum.com' }
+
     ];
     $scope.loadTags = function(query) {
          return $http.get('/tags?query=' + query);
@@ -199,28 +197,17 @@ function RowEditCtrl($http, $modalInstance, grid, row) {
 	vm.save = save;
 	function save() {
 		if (row.entity.id == '0') {
-			/*
-			 * $http.post('http://localhost:8080/service/save',
-			 * row.entity).success(function(response) {
-			 * $modalInstance.close(row.entity); }).error(function(response) {
-			 * alert('Cannot edit row (error in console)');
-			 * console.dir(response); });
-			 */
+			
+			
 			row.entity = angular.extend(row.entity, vm.entity);
-			// real ID come back from response after the save in DB
+			
 			row.entity.id = Math.floor(100 + Math.random() * 1000);
 			
 			grid.data.push(row.entity);
 
 		} else {
 			row.entity = angular.extend(row.entity, vm.entity);
-			/*
-			 * $http.post('http://localhost:8080/service/save',
-			 * row.entity).success(function(response) {
-			 * $modalInstance.close(row.entity); }).error(function(response) {
-			 * alert('Cannot edit row (error in console)');
-			 * console.dir(response); });
-			 */
+			
 		}
 		$modalInstance.close(row.entity);
 	}
