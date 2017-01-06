@@ -124,9 +124,9 @@ public class S3BucketController {
 		S3Bucket bucket = bucketService.findByuserName(user.getUsername());
 		String status = deletionProcess(fileName,bucket.getBucketName(), folderName);
 		if ("success".equalsIgnoreCase(status)) {
-			return new ResponseEntity<String>("Successfully Moved to" + folderName, HttpStatus.CREATED);
+			return new ResponseEntity<String>("Successfully Moved to " + folderName, HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<String>("Document is not Moved to" + folderName, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Document is not Moved to " + folderName, HttpStatus.BAD_REQUEST);
 		}
 
 	}

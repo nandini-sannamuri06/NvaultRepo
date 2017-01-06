@@ -131,16 +131,10 @@ app
         }
 
     ]);
-
+var seleIndex ='';
 DocsCtrl.$inject = [ '$scope', '$http', '$modal', 'uiGridConstants' ];
 function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 	
-//	 $scope.someProp = 'abc',
-//	 $scope.showbuttons = true;
-//	 $scope.showMe = function(){
-//	                   alert($scope.someProp);
-//	                   $scope.showbuttons = false;
-//	                };	
 	var vm = this;
 	$scope.showdata =true;
 	vm.serviceGrid = {
@@ -150,6 +144,16 @@ function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 		enableSorting : true,
 		paginationPageSizes: [25, 50, 75, 100],
 		paginationPageSize: 25,
+		onRegisterApi: function(gridApi) {
+		    $scope.gridApi = gridApi;
+		    $scope.mySelectedRows = $scope.gridApi.selection.getSelectedRows();
+		    alert($scope.mySelectedRows);
+		    gridApi.selection.on.rowSelectionChanged($scope, function(row) {
+		        var msg = row.entity.fileName;
+		        seleIndex = msg;
+		        alert("Row Selected! " + msg);
+		    });
+		}
 		//rowTemplate: '<div  ng-click="foo()" ng-bind="row.getProperty(id)"></div>'
 
 		//rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
@@ -188,7 +192,27 @@ function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 
 	
 	$scope.createFolder = function() {
+		alert(seleIndex);
 		
+	},
+	$scope.archive = function() {
+		var fileNameValue = seleIndex;
+		$http.get('/resource/updateDocs',{params:{folderName:'archive',fileName:fileNameValue}}).success(function(response) {
+			vm.serviceGrid.data = response;
+			$scope.docs = response;
+		}).error(function(response) {
+			$log.error(response);
+		})
+		
+	}
+	$scope.trash = function() {
+		var fileNameValue = seleIndex;
+		$http.get('/resource/updateDocs',{params:{folderName:'trash',fileName:fileNameValue}}).success(function(response) {
+			vm.serviceGrid.data = response;
+			$scope.docs = response;
+		}).error(function(response) {
+			$log.error(response);
+		})
 		
 	}
 }
