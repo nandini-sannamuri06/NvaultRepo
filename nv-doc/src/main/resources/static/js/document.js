@@ -147,11 +147,9 @@ function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 		onRegisterApi: function(gridApi) {
 		    $scope.gridApi = gridApi;
 		    $scope.mySelectedRows = $scope.gridApi.selection.getSelectedRows();
-		    alert($scope.mySelectedRows);
 		    gridApi.selection.on.rowSelectionChanged($scope, function(row) {
 		        var msg = row.entity.fileName;
 		        seleIndex = msg;
-		        alert("Row Selected! " + msg);
 		    });
 		}
 		//rowTemplate: '<div  ng-click="foo()" ng-bind="row.getProperty(id)"></div>'
@@ -185,11 +183,6 @@ function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 		$log.error(response);
 	})
 	
-	$scope.foo = function() {
-
-    alert('');
-  };
-
 	
 	$scope.createFolder = function() {
 		alert(seleIndex);
@@ -197,22 +190,28 @@ function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 	},
 	$scope.archive = function() {
 		var fileNameValue = seleIndex;
-		$http.get('/resource/updateDocs',{params:{folderName:'archive',fileName:fileNameValue}}).success(function(response) {
-			vm.serviceGrid.data = response;
-			$scope.docs = response;
-		}).error(function(response) {
-			$log.error(response);
-		})
-		
-	}
+		if(fileNameValue==''){
+			alert('Please select a file for moving to Archive');
+		}else{
+			$http.get('/resource/updateDocs',{params:{folderName:'archive',fileName:fileNameValue}}).success(function(response) {
+				alert(response)
+			}).error(function(response) {
+				$log.error(response);
+			})
+			
+		}
+	},
 	$scope.trash = function() {
 		var fileNameValue = seleIndex;
+		if(fileNameValue==''){
+			alert('Please select a file for moving to Trash');
+		}else{
 		$http.get('/resource/updateDocs',{params:{folderName:'trash',fileName:fileNameValue}}).success(function(response) {
-			vm.serviceGrid.data = response;
-			$scope.docs = response;
+			alert(response)
 		}).error(function(response) {
 			$log.error(response);
 		})
+		}
 		
 	}
 }
