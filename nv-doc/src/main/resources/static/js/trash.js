@@ -23,7 +23,7 @@ function DocsTrashCtrl($scope, $http, $modal, uiGridConstants) {
 		enableCellEdit : false
 	}, {
 		field : 'size',
-		displayName : 'Size',
+		displayName : 'Size (KB)',
 		enableSorting : true,
 		enableCellEdit : false,
 //		cellTemplate:'<button class="btn primary" ng-click="grid.appScope.showMe()" >Click Me</button>'
