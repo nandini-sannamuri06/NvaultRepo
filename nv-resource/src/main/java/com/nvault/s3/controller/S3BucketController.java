@@ -80,10 +80,11 @@ public class S3BucketController {
 			UserDocDVO userDocDVO = new UserDocDVO();
 			userDocDVO.setFileName(summary.getKey().split("/")[1]);
 			userDocDVO.setModifiedDate(summary.getLastModified());
-			userDocDVO.setSize(summary.getSize());
+			userDocDVO.setSize(summary.getSize()/1024);
 			userDocs.add(userDocDVO);
 			}
 		}
+		System.out.println("userDocs"+userDocs);
 		return new ResponseEntity<List<UserDocDVO>>(userDocs, HttpStatus.CREATED);
 	}
 
@@ -117,7 +118,7 @@ public class S3BucketController {
 	}
 
 	@RequestMapping(value = "/updateDocs", method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-	public ResponseEntity<String> updateDocs(@RequestParam("fielName") String fileName, @RequestParam("folderName") String folderName) {
+	public ResponseEntity<String> updateDocs(@RequestParam("fileName") String fileName, @RequestParam("folderName") String folderName) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
 		S3Bucket bucket = bucketService.findByuserName(user.getUsername());

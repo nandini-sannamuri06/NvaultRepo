@@ -17,30 +17,26 @@ function DocsTrashCtrl($scope, $http, $modal, uiGridConstants) {
 		//rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
 	};
 	vmt.serviceGrid.columnDefs = [ {
-		field : 'id',
-		displayName : 'Id',
-		enableSorting : true,
-		type : 'number',
-		enableCellEdit : false,
-		width : 60,
-		sort : {
-			direction : uiGridConstants.ASC,
-			priority : 1,
-		},
-	}, {
 		field : 'fileName',
 		displayName : 'File Name',
 		enableSorting : true,
 		enableCellEdit : false
 	}, {
-		field : 'path',
-		displayName : 'Location',
+		field : 'size',
+		displayName : 'Size',
 		enableSorting : true,
-		enableCellEdit : false
-	}];
+		enableCellEdit : false,
+//		cellTemplate:'<button class="btn primary" ng-click="grid.appScope.showMe()" >Click Me</button>'
+	},{
+		field : 'modifiedDate',
+		displayName : 'ModifiedDate',
+		enableSorting : true,
+		enableCellEdit : false,
+	}
+	];
 
 
-	$http.get('/resource/getTrash').success(function(response) {
+	$http.get('/resource/fetchDocs',{params:{folderName:'trash'}}).success(function(response) {
 		vmt.serviceGrid.data = response;
 		$scope.docs = response;
 	}).error(function(response) {
