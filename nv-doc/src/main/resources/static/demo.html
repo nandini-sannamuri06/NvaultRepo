@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html ng-app="Docs">
+
+<head>
+<meta charset="utf-8" />
+<title>title</title>
+<base href="docs" />
+<!-- Bootstrap Core CSS -->
+<link rel="styleSheet"
+	href="http://ui-grid.info/release/ui-grid.min.css" />
+<link rel="styleSheet" href="css/style-grid.css" />
+<link data-require="bootstrap-css@3.1.1" data-semver="3.1.1"
+	rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
+<script data-require="ui-bootstrap@0.13.3" data-semver="0.13.3"
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.3/ui-bootstrap-tpls.min.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+<script src="http://ui-grid.info/release/ui-grid.js"></script>
+<link rel="stylesheet" href="http://ui-grid.info/release/ui-grid.css"
+	type="text/css" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+[ng\:cloak], [ng-cloak], .ng-cloak {
+	display: none !important;
+}
+</style>
+
+
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+<!-- JS -->
+<style type="text/css">
+[ng\:cloak], [ng-cloak], .ng-cloak {
+	display: none !important;
+}
+
+.button {
+	-moz-appearance: button;
+	/* Firefox */
+	-webkit-appearance: button;
+	/* Safari and Chrome */
+	padding: 10px;
+	margin: 10px;
+	width: 126px;
+}
+
+.drop-box {
+	background: #F8F8F8;
+	border: 5px dashed #DDD;
+	height: 65px;
+	text-align: center;
+	padding-top: 17px;
+	margin: 10px;
+}
+
+.dragover {
+	border: 5px dashed blue;
+}
+
+.progress div {
+	font-size: smaller;
+	background: orange;
+	width: 0;
+}
+
+ul {
+	list-style-type: none;
+}
+</style>
+
+</head>
+
+<body>
+<div class="container" ng-controller="DocsCtrl">
+<link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
+ <div class="mail-box">
+                  <aside class="sm-side">
+                      <div class="user-head">
+                          <a class="inbox-avatar" href="javascript:;">
+                              <img  width="64" hieght="60" src="http://bootsnipp.com/img/avatars/ebeb306fd7ec11ab68cbcaa34282158bd80361a7.jpg">
+                          </a>
+                          <div class="user-name">
+                              <h5><a href="#">Profile Name</a></h5>
+                              <span><a href="#">user@nisum.com</a></span>
+                          </div>
+                      </div>
+                      
+                      <ul class="inbox-nav inbox-divider">
+                          <li class="active">
+                              <a href="index.html"><i class="glyphicon glyphicon-folder-open"></i> Home </a>
+
+                          </li>
+                          <li>
+                              <a href="archive.html"><i class="fa fa-envelope-o"></i> Archive</a>
+                          </li>
+                          <li>
+                              <a href="trash.html"><i class="fa fa-bookmark-o"></i> Trash</a>
+                          </li>
+                          <li>
+                              <a href="#" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-cloud-upload"></i>
+								Upload</a>
+                          </li>
+                      </ul>
+                      
+
+
+                  </aside>
+                  <aside class="lg-side">
+                      <div class="inbox-head">
+                          <h3>Docs</h3>
+                          <form action="#" class="pull-right position">
+                              <div class="input-append">
+                                  <input type="text" class="sr-input" placeholder="Search Docs">
+                                  <button class="btn sr-btn" type="button"><i class="fa fa-search"></i></button>
+                              </div>
+                          </form>
+                      </div>
+                      <div class="inbox-body">
+                         <div class="mail-option">
+		                    <button type="button" class="btn btn-primary" ng-click="createFolder()">New Folder</button>
+							<button type="button" class="btn btn-success" ng-click="trash()">Move to Trash</button>
+							<button type="button" class="btn btn-info" ng-click="archive()">Move to Archive</button>
+							<button type="button" class="btn btn-warning" ng-click="Download()">Download</button>
+							<button type="button" class="btn btn-warning" ng-click="Share()">Share</button>
+						</div>
+						
+						<div ng-controller="DocsCtrl as vm">
+							<div id="serviceGrid" ui-grid-move-columns ui-grid-pagination
+							ui-grid-selection ui-grid-resize-columns ui-grid-pinning
+							ui-grid-exporter ui-grid-auto-resize ui-grid-pagination
+							ui-grid-edit ui-grid="vm.serviceGrid" class="influxGrid"
+							style="height: 300px;"></div>
+						</div>
+						
+						<!-- Drop Files Model -->
+						<div class="modal fade" id="myModal" role="dialog">
+							<div class="modal-dialog">
+	
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">upload files</h4>
+									</div>
+									<div class="modal-body">
+	
+										<div ng-controller="MyCtrl">
+											<div ng-show="legthIncreased" style="color: red">{{length}}</div>
+											<div ng-show="SizeIncreased" style="color: red">{{Size}}</div>
+											<div ng-show="fileFormat" style="color: red">{{File}}</div>
+											<div ng-show="fileFormat" style="color: red">{{Type}}</div>
+	
+											<div ngf-drop ngf-select ng-model="files" class="drop-box"
+												ngf-drag-over-class="dragover"
+												accept="image/*,.doc,.xslx,application/pdf,.zip,.rar,.mp4,.avi,.wmv,.mpeg"
+												ngf-multiple="true" ngf-allow-dir="true">Drop files
+												here or click to upload</div>
+											<div ngf-no-file-drop>File Drag/Drop is not supported
+												for this browser</div>
+											Files:
+	
+											<div ng-show="ShowFilesProgress">
+												<ul>
+													<li ng-repeat="fileName in files" style="font: smaller">Uploading
+														:: {{fileName.name}} <span class="progress"
+														ng-show="fileName.progress >= 0">
+															<div style="width: {{fileName.progress}}%"
+																ng-bind="fileName.progress + '%'"></div>
+													</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default"
+											data-dismiss="modal">Close</button>
+									</div>
+								</div>
+	
+							</div>
+						</div>
+						
+                      </div>
+                  </aside>
+              </div>
+</div>
+
+
+
+	<script src="js/angular-bootstrap.js" type="text/javascript"></script>
+	<script src="js/ng-file-upload-shim.min.js"></script>
+	<!-- for no html5 browsers support -->
+	<script src="js/ng-file-upload.min.js"></script>
+	<script type="text/javascript" src="js/demo.js"></script>
+
+</body>
+
+</html>

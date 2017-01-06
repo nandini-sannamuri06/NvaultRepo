@@ -93,8 +93,15 @@ app
                                                 status,
                                                 headers,
                                                 config) {
-                                              $scope.successFlag=true;
-                                              $scope.successMessage = data;
+                                                $timeout(function() {
+                                                    $scope.log = 'file: ' +
+                                                        config.file.name +
+                                                        ', Response: ' +
+                                                        JSON
+                                                        .stringify(data) +
+                                                        '\n' +
+                                                        $scope.log;
+                                                });
                                             });
 
                                 }
@@ -143,14 +150,9 @@ function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 		    gridApi.selection.on.rowSelectionChanged($scope, function(row) {
 		        var msg = row.entity.fileName;
 		        seleIndex = msg;
-		        $('div.grdOptionBtns').css('display','block');
 		    });
-//		    rowTemplate: '<div ng-click="myvalue = !myvalue" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid" class="ui-grid-cell" ng-class="col.colIndex()" ui-grid-cell></div>',
-//		    rowTemplate: '<div ng-click="myvalue = !myvalue"></div>',
-//		    if($scope.mySelectedRows.length>0){
-//		    	$scope.myvalue = true; 
-//		    }
 		}
+		//rowTemplate: '<div  ng-click="foo()" ng-bind="row.getProperty(id)"></div>'
 
 		//rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
 	};
