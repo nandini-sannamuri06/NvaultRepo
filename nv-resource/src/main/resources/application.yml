@@ -23,7 +23,7 @@ spring:
       mail:
       host: smtp.gmail.com
       username: nsuggula@nisum.com
-      password: Welcome"sai06
+      password: xxxxxx
       properties:
                     mail:
                       smtp:

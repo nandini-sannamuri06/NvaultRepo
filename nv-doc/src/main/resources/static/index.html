@@ -159,6 +159,7 @@ ul {
 				<div class="modal-body">
 
 					<div ng-controller="MyCtrl">
+					    <div ng-show="successFlag">{{successMessage}}</div>
 						<div ng-show="legthIncreased" style="color: red">{{length}}</div>
 						<div ng-show="SizeIncreased" style="color: red">{{Size}}</div>
 					<div ng-show="fileFormat" style="color: red">{{File}}</div>
