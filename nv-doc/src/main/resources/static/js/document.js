@@ -181,7 +181,6 @@ function DocsCtrl($scope, $http, $filter,$modal, uiGridConstants) {
 		vm.serviceGrid.data = response;
 		$scope.docs = response;
 	}).error(function(response) {
-		$log.error(response);
 	})
 	
 	$scope.refreshData = function() {

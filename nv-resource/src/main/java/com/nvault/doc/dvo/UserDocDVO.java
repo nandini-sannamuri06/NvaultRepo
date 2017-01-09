@@ -22,6 +22,16 @@ public class UserDocDVO implements Serializable {
 	private long size;
 	
 	private Date modifiedDate;
+	
+	private String fileType;
+	
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
 
 	public UserDocDVO() {
 	}
@@ -88,6 +98,13 @@ public class UserDocDVO implements Serializable {
 
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
+	}
+
+	@Override
+	public String toString() {
+		return "UserDocDVO [id=" + id + ", archive=" + archive + ", fileName=" + fileName + ", path=" + path
+				+ ", trash=" + trash + ", userId=" + userId + ", size=" + size + ", modifiedDate=" + modifiedDate
+				+ ", fileType=" + fileType + "]";
 	}
 
 	

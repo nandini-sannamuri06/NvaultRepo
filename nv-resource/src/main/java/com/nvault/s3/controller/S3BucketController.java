@@ -1,7 +1,6 @@
 package com.nvault.s3.controller;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,7 +38,9 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.nvault.doc.dvo.UserDocDVO;
 import com.nvault.model.NVaultUser;
 import com.nvault.s3.model.S3Bucket;
+import com.nvault.s3.model.S3Folder;
 import com.nvault.s3.service.S3BucketService;
+
 
 @RestController
 public class S3BucketController {
@@ -49,6 +50,11 @@ public class S3BucketController {
 	@Autowired
 	public S3BucketService bucketService;
 
+	/**
+	 * @param userMap
+	 * @return
+	 * This method is used to create bucket when user is registered for the first time.
+	 */
 	@RequestMapping(value = "/createBucket", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
 	public ResponseEntity<String> createBucket(@RequestBody HashMap<String, String> userMap) {
 		try {
@@ -64,6 +70,11 @@ public class S3BucketController {
 
 	}
 
+	/**
+	 * @param folderName
+	 * @return
+	 * This Method is used to fetch the folders and files which includes in the given Folder Name.
+	 */
 	@RequestMapping(value = "/fetchDocs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	// Need to write logic for fetching the Folders.
 	public ResponseEntity<List<UserDocDVO>> getDocs(@RequestParam("folderName") String folderName) {
@@ -78,19 +89,34 @@ public class S3BucketController {
 		ObjectListing objects = s3Client.listObjects(listObjectsRequest);
 		List<UserDocDVO> userDocs = new ArrayList<UserDocDVO>();
 		List<S3ObjectSummary> list = objects.getObjectSummaries();
+		List<S3Folder> listFolders = bucketService.listAllFolders(folderName+"/");
 		for (S3ObjectSummary summary : list) {
-			if (!summary.getKey().endsWith("/")) {
+			if ((!summary.getKey().endsWith("/"))) {
 				UserDocDVO userDocDVO = new UserDocDVO();
-				userDocDVO.setFileName(summary.getKey().split("/")[1]);
+				userDocDVO.setFileName(summary.getKey().substring(summary.getKey().lastIndexOf("/")+1));
 				userDocDVO.setModifiedDate(summary.getLastModified());
 				userDocDVO.setSize(summary.getSize() / 1024);
+				userDocDVO.setFileType("file");
 				userDocs.add(userDocDVO);
 			}
+		}
+		for(S3Folder s3Folder:listFolders){
+			UserDocDVO userDocDVO = new UserDocDVO();
+			userDocDVO.setFileName(s3Folder.getFolderName());
+			userDocDVO.setFileType("folder");
+			userDocs.add(userDocDVO);
 		}
 		System.out.println("userDocs" + userDocs);
 		return new ResponseEntity<List<UserDocDVO>>(userDocs, HttpStatus.CREATED);
 	}
 
+	/**
+	 * @param f
+	 * @return
+	 * @throws IOException
+	 * This is used to upload the docs in the Home Folder.
+	 * Need to add the logic for upload the folder into the selected folder.
+	 */
 	@RequestMapping(value = "/uploadDocs", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
 	public ResponseEntity<String> uploadDocs(@RequestParam("file") MultipartFile f) throws IOException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -120,27 +146,74 @@ public class S3BucketController {
 
 	}
 
-	@RequestMapping(value = "/updateDocs", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-	public ResponseEntity<HashMap<String,String>> updateDocs(@RequestParam("fileNames") List<String> fileNames,
+	/**
+	 * @param fileNames
+	 * @param folderName
+	 * @return
+	 * This is used to move the docs from one folder to trash/archive.
+	 */
+	@RequestMapping(value = "/updateDocs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<HashMap<String, String>> updateDocs(@RequestParam("fileNames") List<String> fileNames,
 			@RequestParam("folderName") String folderName) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
 		S3Bucket bucket = bucketService.findByuserName(user.getUsername());
-		HashMap<String,String> resultMap = new HashMap<String,String>();
+		HashMap<String, String> resultMap = new HashMap<String, String>();
 		for (String fileName : fileNames) {
 			String status = deletionProcess(fileName, bucket.getBucketName(), folderName);
 			if ("success".equalsIgnoreCase(status)) {
-			     resultMap.put(fileName, "SuccessFully Moved to"+ folderName);
+				resultMap.put(fileName, "SuccessFully Moved to" + folderName);
 			} else {
-				resultMap.put(fileName, "Not SuccessFully Moved to"+ folderName);
+				resultMap.put(fileName, "Not SuccessFully Moved to" + folderName);
 			}
 		}
-		return new ResponseEntity<HashMap<String, String>>(resultMap,HttpStatus.OK);
+		return new ResponseEntity<HashMap<String, String>>(resultMap, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/createFolder", method = RequestMethod.POST)
-	public void createFolder() {
-
+	/**
+	 * @param folderMap
+	 * @return
+	 * This is used to create a folder in the specific path.
+	 */
+	@RequestMapping(value = "/createFolder", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<String> createFolder(@RequestBody HashMap<String,String> folderMap) {
+		AWSCredentials credentials = new BasicAWSCredentials(env.getProperty("accessKey"),
+				env.getProperty("securityKey"));
+		AmazonS3 s3Client = new AmazonS3Client(credentials);
+		String baseFolderName = folderMap.get("baseFolderName");
+		String newFolderName  = folderMap.get("newFolderName");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		NVaultUser user = (NVaultUser) auth.getPrincipal();
+		S3Bucket bucket = bucketService.findByuserName(user.getUsername());
+		S3Folder s3Folder = new S3Folder();
+		s3Folder.setBucketName(bucket.getBucketName());
+		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentLength(0);
+		InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
+		PutObjectRequest putObjectRequest = null;
+		String status = "success";
+		try {
+			if (baseFolderName != null && baseFolderName!="") {
+				putObjectRequest = new PutObjectRequest(bucket.getBucketName()+"/home/" + baseFolderName, newFolderName + "/", emptyContent,
+						metadata);
+				s3Folder.setBaseFolder("home/"+baseFolderName);
+				s3Folder.setFolderName(newFolderName);
+			} else {
+				putObjectRequest = new PutObjectRequest(bucket.getBucketName()+"/home", newFolderName + "/", emptyContent, metadata);
+				s3Folder.setBaseFolder("home/");
+				s3Folder.setFolderName(newFolderName);
+			}
+			s3Client.putObject(putObjectRequest);
+			bucketService.saveFolder(s3Folder);
+		} catch (Exception e) {
+			System.out.println("Exception occured while creating folder" + e.getMessage());
+			status = "failure";
+		}
+		if ("success".equalsIgnoreCase(status)) {
+			return new ResponseEntity<String>("Folder is Successfully created", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("Folder is Not Created Successfully", HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	/**
@@ -169,17 +242,31 @@ public class S3BucketController {
 			// /
 			PutObjectRequest homeObjReq = new PutObjectRequest(bucketName, env.getProperty("homePath"), emptyContent,
 					metadata);
+			S3Folder homeFolder = new S3Folder();
+			homeFolder.setBucketName(bucketName);
+			homeFolder.setBaseFolder(null);
+			homeFolder.setFolderName(env.getProperty("homePath"));
 			PutObjectRequest trashObjReq = new PutObjectRequest(bucketName, env.getProperty("trashPath"), emptyContent,
 					metadata);
+			S3Folder trashFolder = new S3Folder();
+			trashFolder.setBucketName(bucketName);
+			trashFolder.setBaseFolder(null);
+			trashFolder.setFolderName(env.getProperty("trashPath"));
 			PutObjectRequest archiveObjReq = new PutObjectRequest(bucketName, env.getProperty("archivePath"),
 					emptyContent, metadata);
-
+			S3Folder archiveFolder = new S3Folder();
+			archiveFolder.setBucketName(bucketName);
+			archiveFolder.setBaseFolder(null);
+			archiveFolder.setFolderName(env.getProperty("archivePath"));
 			// send request to S3 to create folder
 			s3Client.putObject(homeObjReq);
 			s3Client.putObject(trashObjReq);
 			s3Client.putObject(archiveObjReq);
 			bucket.setUserName(userName);
 			bucketService.saveBucket(bucket);
+			bucketService.saveFolder(homeFolder);
+			bucketService.saveFolder(trashFolder);
+			bucketService.saveFolder(archiveFolder);
 		} catch (Exception e) {
 			bucket = null;
 			System.out.println("bucket already Exists" + e.getMessage());
