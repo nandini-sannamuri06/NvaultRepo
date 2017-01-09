@@ -76,12 +76,13 @@
 				</div>
 
 			</aside>
-			<aside class="lg-side">
+			<aside class="lg-side" ng-controller="DocsTrashCtrl as vmt">
 				<div class="inbox-head">
 					<h3>Trash Docs</h3>
+					<input type="text" class="form-control" ng-change="refreshData()" placeholder="Search Docs" ng-model="searchTrashDocs">
 				</div>
 				<div class="inbox-body">
-					<div ng-controller="DocsTrashCtrl as vmt" >
+					<div>
 						<br />
 						<div id="serviceGrid" ui-grid-move-columns ui-grid-pagination
 							ui-grid-selection ui-grid-resize-columns ui-grid-pinning

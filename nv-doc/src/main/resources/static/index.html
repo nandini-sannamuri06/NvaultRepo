@@ -23,6 +23,7 @@
 <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
 <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
 <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+<script src="http://ui-grid.info/release/ui-grid-unstable.js"></script>
 <script src="http://ui-grid.info/release/ui-grid.js"></script>
 <link rel="stylesheet" href="http://ui-grid.info/release/ui-grid.css"
 	type="text/css" />
@@ -130,12 +131,13 @@ ul {
 				</div>
 
 			</aside>
-			<aside class="lg-side">
+			<aside class="lg-side" ng-controller="DocsCtrl as vm">
 				<div class="inbox-head">
-					<h3>Home Docs</h3>
+					<div><h3>Home Docs</h3>
+					<input type="text" class="form-control" ng-change="refreshData()" placeholder="Search Docs" ng-model="searchHomeDocs">
 				</div>
 				<div class="inbox-body">
-					<div ng-controller="DocsCtrl as vm" >
+					<div>
 						<br />
 						<div id="serviceGrid" ui-grid-move-columns ui-grid-pagination
 							ui-grid-selection ui-grid-resize-columns ui-grid-pinning

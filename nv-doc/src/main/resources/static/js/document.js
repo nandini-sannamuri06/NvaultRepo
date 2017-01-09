@@ -125,8 +125,8 @@ app
 
     ]);
 var seleIndex ='';
-DocsCtrl.$inject = [ '$scope', '$http', '$modal', 'uiGridConstants' ];
-function DocsCtrl($scope, $http, $modal, uiGridConstants) {
+DocsCtrl.$inject = [ '$scope', '$http', '$filter', '$modal', 'uiGridConstants' ];
+function DocsCtrl($scope, $http, $filter,$modal, uiGridConstants) {
 	
 	var vm = this;
 	$scope.showdata =true;
@@ -170,6 +170,9 @@ function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 		displayName : 'ModifiedDate',
 		enableSorting : true,
 		enableCellEdit : false,
+	},{
+		name : 'Download',
+		cellTemplate : '<button type="button" class="glyphicon glyphicon-floppy-save" ng-click="grid.appScope.d(row.entity)"></button> '
 	}
 	];
 
@@ -180,6 +183,10 @@ function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 	}).error(function(response) {
 		$log.error(response);
 	})
+	
+	$scope.refreshData = function() {
+		vm.serviceGrid.data = $filter('filter')($scope.docs, $scope.searchHomeDocs, undefined);
+	}
 	
 	
 	$scope.createFolder = function() {

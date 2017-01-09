@@ -32,6 +32,9 @@ function DocsArchiveCtrl($scope, $http, $modal, uiGridConstants) {
 		displayName : 'ModifiedDate',
 		enableSorting : true,
 		enableCellEdit : false,
+	},{
+		name : 'Download',
+		cellTemplate : '<button type="button" class="glyphicon glyphicon-floppy-save" ng-click="grid.appScope.d(row.entity)"></button> '
 	}
 	];
 
@@ -41,6 +44,10 @@ function DocsArchiveCtrl($scope, $http, $modal, uiGridConstants) {
 	}).error(function(response) {
 		$log.error(response);
 	})
+	
+	$scope.refreshData = function() {
+		vma.serviceGrid.data = $filter('filter')($scope.docs, $scope.searchArchiveDocs, undefined);
+	}
 
 	
 	$scope.createFolder = function() {

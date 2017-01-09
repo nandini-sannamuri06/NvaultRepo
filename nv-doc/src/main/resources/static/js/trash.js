@@ -3,8 +3,8 @@ var app = angular.module('Docs', ['ngAnimate', 'ui.grid', 'ui.grid.moveColumns',
 
 app.controller('DocsTrashCtrl', DocsTrashCtrl);
 
-DocsTrashCtrl.$inject = [ '$scope', '$http', '$modal', 'uiGridConstants' ];
-function DocsTrashCtrl($scope, $http, $modal, uiGridConstants) {
+DocsTrashCtrl.$inject = [ '$scope', '$http','$filter', '$modal', 'uiGridConstants' ];
+function DocsTrashCtrl($scope, $http, $filter, $modal, uiGridConstants) {
 	var vmt = this;
 	$scope.showdata =true;
 	vmt.serviceGrid = {
@@ -32,6 +32,9 @@ function DocsTrashCtrl($scope, $http, $modal, uiGridConstants) {
 		displayName : 'ModifiedDate',
 		enableSorting : true,
 		enableCellEdit : false,
+	},{
+		name : 'Download',
+		cellTemplate : '<button type="button" class="glyphicon glyphicon-floppy-save" ng-click="grid.appScope.d(row.entity)"></button> '
 	}
 	];
 
@@ -42,6 +45,10 @@ function DocsTrashCtrl($scope, $http, $modal, uiGridConstants) {
 	}).error(function(response) {
 		$log.error(response);
 	})
+	
+	$scope.refreshData = function() {
+		vmt.serviceGrid.data = $filter('filter')($scope.docs, $scope.searchTrashDocs, undefined);
+	}
 
 	
 	$scope.createFolder = function() {
