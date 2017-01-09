@@ -212,5 +212,14 @@ function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 		}
 		
 	}
+	$scope.Download = function() {
+		var fileNameValue = seleIndex;
+		if(fileNameValue==''){
+			alert('Please select a file for downloading');
+		}else{
+			window.location.assign('/resource/downloadDoc?fileName='+fileNameValue+'&folderName=home');
+		}
+		
+	}
 }
 

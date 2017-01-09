@@ -4,9 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -206,4 +209,30 @@ public class S3BucketController {
 		}
 
 	}
+	@RequestMapping(value = "/downloadDoc", method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+	public void downloadDocs(@RequestParam("fileName") String fileName, @RequestParam("folderName") String folderName,HttpServletResponse response) throws IOException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		NVaultUser user = (NVaultUser) auth.getPrincipal();
+		S3Bucket bucket = bucketService.findByuserName(user.getUsername());
+		AmazonS3 s3Client = new AmazonS3Client(
+				new BasicAWSCredentials(env.getProperty("accessKey"), env.getProperty("securityKey")));
+		S3Object object = s3Client.getObject(new GetObjectRequest(bucket.getBucketName()+"/"+folderName, fileName));
+		InputStream is = object.getObjectContent();
+ 
+        // MIME type of the file
+        response.setContentType("application/octet-stream");
+        // Response header
+        response.setHeader("Content-Disposition", "attachment; filename=\""
+                + fileName + "\"");
+        // Read from the file and write into the response
+        OutputStream os = response.getOutputStream();
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = is.read(buffer)) != -1) {
+            os.write(buffer, 0, len);
+        }
+        os.flush();
+        os.close();
+        is.close();
+    }
 }
