@@ -61,8 +61,8 @@ public class S3BucketController {
 
 	}
 
-	@RequestMapping(value = "/fetchDocs", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	//Need to write logic for fetching the Folders.
+	@RequestMapping(value = "/fetchDocs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	// Need to write logic for fetching the Folders.
 	public ResponseEntity<List<UserDocDVO>> getDocs(@RequestParam("folderName") String folderName) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
@@ -71,24 +71,24 @@ public class S3BucketController {
 				env.getProperty("securityKey"));
 		AmazonS3 s3Client = new AmazonS3Client(credentials);
 		ListObjectsRequest listObjectsRequest = new ListObjectsRequest().withBucketName(bucket.getBucketName())
-                .withPrefix(folderName+"/");
-       ObjectListing objects = s3Client.listObjects(listObjectsRequest);
+				.withPrefix(folderName + "/");
+		ObjectListing objects = s3Client.listObjects(listObjectsRequest);
 		List<UserDocDVO> userDocs = new ArrayList<UserDocDVO>();
 		List<S3ObjectSummary> list = objects.getObjectSummaries();
-		for(S3ObjectSummary summary : list) {
-			if(!summary.getKey().endsWith("/")){
-			UserDocDVO userDocDVO = new UserDocDVO();
-			userDocDVO.setFileName(summary.getKey().split("/")[1]);
-			userDocDVO.setModifiedDate(summary.getLastModified());
-			userDocDVO.setSize(summary.getSize()/1024);
-			userDocs.add(userDocDVO);
+		for (S3ObjectSummary summary : list) {
+			if (!summary.getKey().endsWith("/")) {
+				UserDocDVO userDocDVO = new UserDocDVO();
+				userDocDVO.setFileName(summary.getKey().split("/")[1]);
+				userDocDVO.setModifiedDate(summary.getLastModified());
+				userDocDVO.setSize(summary.getSize() / 1024);
+				userDocs.add(userDocDVO);
 			}
 		}
-		System.out.println("userDocs"+userDocs);
+		System.out.println("userDocs" + userDocs);
 		return new ResponseEntity<List<UserDocDVO>>(userDocs, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/uploadDocs", method = RequestMethod.POST,produces = MediaType.TEXT_HTML_VALUE)
+	@RequestMapping(value = "/uploadDocs", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
 	public ResponseEntity<String> uploadDocs(@RequestParam("file") MultipartFile f) throws IOException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
@@ -98,9 +98,9 @@ public class S3BucketController {
 		if (bucket != null) {
 			try {
 				InputStream stream = new ByteArrayInputStream(f.getBytes());
-	            ObjectMetadata meta = new ObjectMetadata();
-	            meta.setContentLength(f.getSize());
-				s3Client.putObject(bucket.getBucketName(), "home/"+f.getOriginalFilename(), stream, meta);
+				ObjectMetadata meta = new ObjectMetadata();
+				meta.setContentLength(f.getSize());
+				s3Client.putObject(bucket.getBucketName(), "home/" + f.getOriginalFilename(), stream, meta);
 				return new ResponseEntity<String>("File Uploaded SuccessFully", HttpStatus.CREATED);
 			} catch (Exception e) {
 				System.out.println("Exception occured in uploading file" + e.getMessage());
@@ -109,31 +109,35 @@ public class S3BucketController {
 		} else {
 			creationProcess(user.getMail().split("@")[0], user.getUsername());
 			InputStream stream = new ByteArrayInputStream(f.getBytes());
-            ObjectMetadata meta = new ObjectMetadata();
-            meta.setContentLength(f.getSize());
-			s3Client.putObject(bucket.getBucketName(), "home/"+f.getOriginalFilename(), stream, meta);
+			ObjectMetadata meta = new ObjectMetadata();
+			meta.setContentLength(f.getSize());
+			s3Client.putObject(bucket.getBucketName(), "home/" + f.getOriginalFilename(), stream, meta);
 			return new ResponseEntity<String>("File Uploaded SuccessFully", HttpStatus.CREATED);
 		}
 
 	}
 
-	@RequestMapping(value = "/updateDocs", method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-	public ResponseEntity<String> updateDocs(@RequestParam("fileName") String fileName, @RequestParam("folderName") String folderName) {
+	@RequestMapping(value = "/updateDocs", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<HashMap<String,String>> updateDocs(@RequestParam("fileNames") List<String> fileNames,
+			@RequestParam("folderName") String folderName) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
 		S3Bucket bucket = bucketService.findByuserName(user.getUsername());
-		String status = deletionProcess(fileName,bucket.getBucketName(), folderName);
-		if ("success".equalsIgnoreCase(status)) {
-			return new ResponseEntity<String>("Successfully Moved to " + folderName, HttpStatus.CREATED);
-		} else {
-			return new ResponseEntity<String>("Document is not Moved to " + folderName, HttpStatus.BAD_REQUEST);
+		HashMap<String,String> resultMap = new HashMap<String,String>();
+		for (String fileName : fileNames) {
+			String status = deletionProcess(fileName, bucket.getBucketName(), folderName);
+			if ("success".equalsIgnoreCase(status)) {
+			     resultMap.put(fileName, "SuccessFully Moved to"+ folderName);
+			} else {
+				resultMap.put(fileName, "Not SuccessFully Moved to"+ folderName);
+			}
 		}
-
+		return new ResponseEntity<HashMap<String, String>>(resultMap,HttpStatus.OK);
 	}
-	
-	@RequestMapping(value="/createFolder", method = RequestMethod.POST)
-	public void createFolder(){
-		
+
+	@RequestMapping(value = "/createFolder", method = RequestMethod.POST)
+	public void createFolder() {
+
 	}
 
 	/**
@@ -186,15 +190,15 @@ public class S3BucketController {
 	 * @param bucketName
 	 *            This method is used to move the Document to Trash/Archive.
 	 */
-	public String deletionProcess(String fileName,String bucketName, String folderName) {
+	public String deletionProcess(String fileName, String bucketName, String folderName) {
 		System.out.println(folderName + "/" + fileName);
 		AmazonS3 s3Client = new AmazonS3Client(
 				new BasicAWSCredentials(env.getProperty("accessKey"), env.getProperty("securityKey")));
 		try {
 			// Need to get the File from Home Location.
-			S3Object object = s3Client.getObject(new GetObjectRequest(bucketName+"/home", fileName));
+			S3Object object = s3Client.getObject(new GetObjectRequest(bucketName + "/home", fileName));
 			InputStream is = object.getObjectContent();
-			s3Client.putObject(bucketName, folderName+"/"+fileName, is, object.getObjectMetadata());
+			s3Client.putObject(bucketName, folderName + "/" + fileName, is, object.getObjectMetadata());
 			s3Client.deleteObject(bucketName + "/home", fileName);
 			return "success";
 		} catch (Exception e) {
