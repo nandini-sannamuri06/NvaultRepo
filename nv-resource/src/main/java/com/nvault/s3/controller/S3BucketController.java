@@ -4,7 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,11 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,10 +29,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
@@ -322,4 +330,97 @@ public class S3BucketController {
         os.close();
         is.close();
     }
+	
+
+	@RequestMapping(value = "file/download/{username}?{filename}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE )
+    public ResponseEntity<InputStreamResource> downloadPDFFile(@PathVariable  String username , @RequestParam String filename ) throws IOException {
+
+              System.out.println("ENter the Service for download  ...."+username);
+          
+              System.out.println("ENter the Service for download  /"+filename );
+              
+              AmazonS3 s3Client = new AmazonS3Client(
+      				new BasicAWSCredentials(env.getProperty("accessKey"), env.getProperty("securityKey")));
+           
+              s3Client.setObjectAcl(username+"/home", filename, CannedAccessControlList.PublicRead);
+             
+              S3Object object = s3Client.getObject(new GetObjectRequest(username+"/home", filename));
+  			  
+              
+              
+              //object.setKey("ramarao");
+        
+              //AmazonS3 s3Client1 = new AmazonS3Client(Amazon.RegionEndpoint.USEast1);
+              
+            
+              // download file from S3 file >>>>>>>>
+              
+              String bucketName = username; 
+       	      String objectKey  = object.getKey();
+              
+              System.out.println("Object Key>>>>>>>"+objectKey);
+              
+              java.util.Date expiration = new java.util.Date();
+              //expiration.setTime(6000*10*20);
+              
+              GeneratePresignedUrlRequest generateUrl = new GeneratePresignedUrlRequest(username, "home/"+objectKey);
+             
+              
+              
+              
+              generateUrl.setMethod(HttpMethod.GET); // Default.
+              
+              
+              Calendar cal=Calendar.getInstance();
+              cal.setTime(new java.util.Date());
+              cal.add(Calendar.DATE, 2);
+              
+              
+              //generateUrl.setExpiration(expiration);
+              generateUrl.setExpiration( cal.getTime() );
+             
+              
+              
+              //AmazonS3 s3Client;
+			  URL url = s3Client.generatePresignedUrl(generateUrl);
+              
+			  System.out.println("donwload URL>>>>>>"+url);
+              InputStream is = object.getObjectContent();
+              
+              
+	
+  			 //s3Client.putObject("rgajendrula33", "home"+"/"+"ramarao.jpg", is, object.getObjectMetadata());
+  			//s3Client.deleteObject("rgajendrula33" + "/home", "ramarao.jpg");
+              
+          // 
+  			
+  			
+  			
+  			
+  			
+  			
+              //
+              
+              
+    	      // String path1="ftp://Users/nisum/Documents/Insurance.pdf";
+               // String path="templates/Insurance.pdf";
+                //ClassPathResource pdfFile = new ClassPathResource(path);
+     
+                HttpHeaders headers = new HttpHeaders();
+             
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+               
+        
+       return ResponseEntity
+                            .ok()
+                .headers(headers)
+                
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(new InputStreamResource(object.getObjectContent()));
+    }
+	
+	
+	
 }
