@@ -333,7 +333,7 @@ public class S3BucketController {
 	
 
 	@RequestMapping(value = "file/download/{username}?{filename}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE )
-    public ResponseEntity<InputStreamResource> downloadPDFFile(@PathVariable  String username , @RequestParam String filename ) throws IOException {
+    public String downloadPDFFile(@PathVariable  String username , @RequestParam String filename ) throws IOException {
 
               System.out.println("ENter the Service for download  ...."+username);
           
@@ -406,19 +406,10 @@ public class S3BucketController {
                // String path="templates/Insurance.pdf";
                 //ClassPathResource pdfFile = new ClassPathResource(path);
      
-                HttpHeaders headers = new HttpHeaders();
-             
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
+               System.out.println(url.toString());
                
         
-       return ResponseEntity
-                            .ok()
-                .headers(headers)
-                
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(new InputStreamResource(object.getObjectContent()));
+       return url.toString();
     }
 	
 	
