@@ -1,0 +1,13 @@
+<html>
+    <body>
+        <div>
+           <h3> Hi ${user} ,</h3> <br>
+           
+         
+           <p>
+            ${username} has shared a file with you , Click the link below to download <br>
+             <a href="${url}">download</a>.
+             <p>
+        </div>
+    </body>
+</html>

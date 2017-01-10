@@ -1,0 +1,52 @@
+<div id="custom-modal">
+  <div id="overlay">
+  <div class="modal-header">
+      <div ng-show="showSelected" color="red">{{idShow}}</div>
+      <div ng-show="showSelected" color="red">{{idShow}}</div>
+      </div>
+    
+     <div class="modal-body" style="min-height: 108px !important;">
+    
+     
+     To :
+			<ui-select multiple tagging="tagTransform" tagging-label="new tag"
+				ng-model="multipleDemo.selectedPeople" theme="select2"
+				ng-disabled="disabled" style="width: 468px;"> <ui-select-match
+				placeholder="Select person...">{{$item.emailId}}&gt;</ui-select-match>
+			<ui-select-choices
+				repeat="person in people | propsFilter: {firstName: $select.search}">
+			<div
+				ng-bind-html="person.firstName+' '+person.lastName | highlight: $select.search"></div>
+			<small> email: {{person.emailId}} </small> </ui-select-choices> </ui-select>
+
+Note :<textarea
+  ng-model="note"
+  [name="string"]
+  [required="string"]
+  [ng-required="string"]
+  [ng-minlength="number"]
+  [ng-maxlength="number"]
+  [ng-pattern="string"]
+  [ng-change="string"]
+  [ng-trim="boolean"] placeholder="add a note">
+add a note
+</textarea>
+
+			
+     
+     
+     </div>
+  
+      <div class="modal-footer">
+     
+    
+    <button class="btn btn-primary" ng-click="share()">Share</button>
+      <button class="btn btn-warning" ng-click="close()">Close</button>
+     </div>
+   
+  </div>
+  
+  <div id="fade"></div>
+  
+  
+</div>

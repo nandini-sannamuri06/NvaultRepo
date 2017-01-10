@@ -1,0 +1,16 @@
+<div class="twraps">
+
+	
+	
+	<table class="table table-bordered">
+	  <tr ng-repeat="item in items">
+	    
+	    <td context-menu menu-items="menus" id="{{'item_'+$index}}" class ="one" title="{{'item_'+$index}}">
+	        <a context>Files - {{$index}} <span class="caret"></span></a>
+	    </td>
+	  </tr>
+	</table>
+
+	
+  <div ng-show="showSelected" color="red">{{idShow}}</div>
+</div>

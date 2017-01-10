@@ -1,5 +1,7 @@
 package com.nvault.message.controller;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +38,17 @@ public class EmailController {
 		pwdDtlsService.savePwdDtls(pwdDetails);
 		//this should make it as asynchronous.
 		String result = emailSenderUtil.sendMail(message);
+		if("success".equals(result)){
+		return new ResponseEntity<String>(result,HttpStatus.OK);
+		}else{
+			return new ResponseEntity<String>(result,HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value="/shareMail", method= RequestMethod.POST ,produces = MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<String> shareMail(@RequestBody HashMap<String, Object> shareMap){
+		
+        String result = emailSenderUtil.shareMail(shareMap);
 		if("success".equals(result)){
 		return new ResponseEntity<String>(result,HttpStatus.OK);
 		}else{

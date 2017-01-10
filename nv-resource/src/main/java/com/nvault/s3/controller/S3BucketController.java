@@ -49,7 +49,6 @@ import com.nvault.s3.model.S3Bucket;
 import com.nvault.s3.model.S3Folder;
 import com.nvault.s3.service.S3BucketService;
 
-
 @RestController
 public class S3BucketController {
 
@@ -60,8 +59,8 @@ public class S3BucketController {
 
 	/**
 	 * @param userMap
-	 * @return
-	 * This method is used to create bucket when user is registered for the first time.
+	 * @return This method is used to create bucket when user is registered for
+	 *         the first time.
 	 */
 	@RequestMapping(value = "/createBucket", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
 	public ResponseEntity<String> createBucket(@RequestBody HashMap<String, String> userMap) {
@@ -80,8 +79,8 @@ public class S3BucketController {
 
 	/**
 	 * @param folderName
-	 * @return
-	 * This Method is used to fetch the folders and files which includes in the given Folder Name.
+	 * @return This Method is used to fetch the folders and files which includes
+	 *         in the given Folder Name.
 	 */
 	@RequestMapping(value = "/fetchDocs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	// Need to write logic for fetching the Folders.
@@ -97,18 +96,18 @@ public class S3BucketController {
 		ObjectListing objects = s3Client.listObjects(listObjectsRequest);
 		List<UserDocDVO> userDocs = new ArrayList<UserDocDVO>();
 		List<S3ObjectSummary> list = objects.getObjectSummaries();
-		List<S3Folder> listFolders = bucketService.listAllFolders(folderName+"/");
+		List<S3Folder> listFolders = bucketService.listAllFolders(folderName + "/");
 		for (S3ObjectSummary summary : list) {
 			if ((!summary.getKey().endsWith("/"))) {
 				UserDocDVO userDocDVO = new UserDocDVO();
-				userDocDVO.setFileName(summary.getKey().substring(summary.getKey().lastIndexOf("/")+1));
+				userDocDVO.setFileName(summary.getKey().substring(summary.getKey().lastIndexOf("/") + 1));
 				userDocDVO.setModifiedDate(summary.getLastModified());
 				userDocDVO.setSize(summary.getSize() / 1024);
 				userDocDVO.setFileType("file");
 				userDocs.add(userDocDVO);
 			}
 		}
-		for(S3Folder s3Folder:listFolders){
+		for (S3Folder s3Folder : listFolders) {
 			UserDocDVO userDocDVO = new UserDocDVO();
 			userDocDVO.setFileName(s3Folder.getFolderName());
 			userDocDVO.setFileType("folder");
@@ -122,8 +121,8 @@ public class S3BucketController {
 	 * @param f
 	 * @return
 	 * @throws IOException
-	 * This is used to upload the docs in the Home Folder.
-	 * Need to add the logic for upload the folder into the selected folder.
+	 *             This is used to upload the docs in the Home Folder. Need to
+	 *             add the logic for upload the folder into the selected folder.
 	 */
 	@RequestMapping(value = "/uploadDocs", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
 	public ResponseEntity<String> uploadDocs(@RequestParam("file") MultipartFile f) throws IOException {
@@ -157,8 +156,7 @@ public class S3BucketController {
 	/**
 	 * @param fileNames
 	 * @param folderName
-	 * @return
-	 * This is used to move the docs from one folder to trash/archive.
+	 * @return This is used to move the docs from one folder to trash/archive.
 	 */
 	@RequestMapping(value = "/updateDocs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<HashMap<String, String>> updateDocs(@RequestParam("fileNames") List<String> fileNames,
@@ -180,16 +178,15 @@ public class S3BucketController {
 
 	/**
 	 * @param folderMap
-	 * @return
-	 * This is used to create a folder in the specific path.
+	 * @return This is used to create a folder in the specific path.
 	 */
 	@RequestMapping(value = "/createFolder", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
-	public ResponseEntity<String> createFolder(@RequestBody HashMap<String,String> folderMap) {
+	public ResponseEntity<String> createFolder(@RequestBody HashMap<String, String> folderMap) {
 		AWSCredentials credentials = new BasicAWSCredentials(env.getProperty("accessKey"),
 				env.getProperty("securityKey"));
 		AmazonS3 s3Client = new AmazonS3Client(credentials);
 		String baseFolderName = folderMap.get("baseFolderName");
-		String newFolderName  = folderMap.get("newFolderName");
+		String newFolderName = folderMap.get("newFolderName");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
 		S3Bucket bucket = bucketService.findByuserName(user.getUsername());
@@ -201,13 +198,14 @@ public class S3BucketController {
 		PutObjectRequest putObjectRequest = null;
 		String status = "success";
 		try {
-			if (baseFolderName != null && baseFolderName!="") {
-				putObjectRequest = new PutObjectRequest(bucket.getBucketName()+"/home/" + baseFolderName, newFolderName + "/", emptyContent,
-						metadata);
-				s3Folder.setBaseFolder("home/"+baseFolderName);
+			if (baseFolderName != null && baseFolderName != "") {
+				putObjectRequest = new PutObjectRequest(bucket.getBucketName() + "/home/" + baseFolderName,
+						newFolderName + "/", emptyContent, metadata);
+				s3Folder.setBaseFolder("home/" + baseFolderName);
 				s3Folder.setFolderName(newFolderName);
 			} else {
-				putObjectRequest = new PutObjectRequest(bucket.getBucketName()+"/home", newFolderName + "/", emptyContent, metadata);
+				putObjectRequest = new PutObjectRequest(bucket.getBucketName() + "/home", newFolderName + "/",
+						emptyContent, metadata);
 				s3Folder.setBaseFolder("home/");
 				s3Folder.setFolderName(newFolderName);
 			}
@@ -304,114 +302,67 @@ public class S3BucketController {
 		}
 
 	}
-	@RequestMapping(value = "/downloadDoc", method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-	public void downloadDocs(@RequestParam("fileName") String fileName, @RequestParam("folderName") String folderName,HttpServletResponse response) throws IOException {
+
+	@RequestMapping(value = "/downloadDoc", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+	public void downloadDocs(@RequestParam("fileName") String fileName, @RequestParam("folderName") String folderName,
+			HttpServletResponse response) throws IOException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
 		S3Bucket bucket = bucketService.findByuserName(user.getUsername());
 		AmazonS3 s3Client = new AmazonS3Client(
 				new BasicAWSCredentials(env.getProperty("accessKey"), env.getProperty("securityKey")));
-		S3Object object = s3Client.getObject(new GetObjectRequest(bucket.getBucketName()+"/"+folderName, fileName));
+		S3Object object = s3Client.getObject(new GetObjectRequest(bucket.getBucketName() + "/" + folderName, fileName));
 		InputStream is = object.getObjectContent();
- 
-        // MIME type of the file
-        response.setContentType("application/octet-stream");
-        // Response header
-        response.setHeader("Content-Disposition", "attachment; filename=\""
-                + fileName + "\"");
-        // Read from the file and write into the response
-        OutputStream os = response.getOutputStream();
-        byte[] buffer = new byte[1024];
-        int len;
-        while ((len = is.read(buffer)) != -1) {
-            os.write(buffer, 0, len);
-        }
-        os.flush();
-        os.close();
-        is.close();
-    }
-	
 
-	@RequestMapping(value = "file/download/{username}?{filename}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE )
-    public String downloadPDFFile(@PathVariable  String username , @RequestParam String filename ) throws IOException {
+		// MIME type of the file
+		response.setContentType("application/octet-stream");
+		// Response header
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+		// Read from the file and write into the response
+		OutputStream os = response.getOutputStream();
+		byte[] buffer = new byte[1024];
+		int len;
+		while ((len = is.read(buffer)) != -1) {
+			os.write(buffer, 0, len);
+		}
+		os.flush();
+		os.close();
+		is.close();
+	}
 
-              System.out.println("ENter the Service for download  ...."+username);
-          
-              System.out.println("ENter the Service for download  /"+filename );
-              
-              AmazonS3 s3Client = new AmazonS3Client(
-      				new BasicAWSCredentials(env.getProperty("accessKey"), env.getProperty("securityKey")));
-           
-              s3Client.setObjectAcl(username+"/home", filename, CannedAccessControlList.PublicRead);
-             
-              S3Object object = s3Client.getObject(new GetObjectRequest(username+"/home", filename));
-  			  
-              
-              
-              //object.setKey("ramarao");
-        
-              //AmazonS3 s3Client1 = new AmazonS3Client(Amazon.RegionEndpoint.USEast1);
-              
-            
-              // download file from S3 file >>>>>>>>
-              
-              String bucketName = username; 
-       	      String objectKey  = object.getKey();
-              
-              System.out.println("Object Key>>>>>>>"+objectKey);
-              
-              java.util.Date expiration = new java.util.Date();
-              //expiration.setTime(6000*10*20);
-              
-              GeneratePresignedUrlRequest generateUrl = new GeneratePresignedUrlRequest(username, "home/"+objectKey);
-             
-              
-              
-              
-              generateUrl.setMethod(HttpMethod.GET); // Default.
-              
-              
-              Calendar cal=Calendar.getInstance();
-              cal.setTime(new java.util.Date());
-              cal.add(Calendar.DATE, 2);
-              
-              
-              //generateUrl.setExpiration(expiration);
-              generateUrl.setExpiration( cal.getTime() );
-             
-              
-              
-              //AmazonS3 s3Client;
-			  URL url = s3Client.generatePresignedUrl(generateUrl);
-              
-			  System.out.println("donwload URL>>>>>>"+url);
-              InputStream is = object.getObjectContent();
-              
-              
-	
-  			 //s3Client.putObject("rgajendrula33", "home"+"/"+"ramarao.jpg", is, object.getObjectMetadata());
-  			//s3Client.deleteObject("rgajendrula33" + "/home", "ramarao.jpg");
-              
-          // 
-  			
-  			
-  			
-  			
-  			
-  			
-              //
-              
-              
-    	      // String path1="ftp://Users/nisum/Documents/Insurance.pdf";
-               // String path="templates/Insurance.pdf";
-                //ClassPathResource pdfFile = new ClassPathResource(path);
-     
-               System.out.println(url.toString());
-               
-        
-       return url.toString();
-    }
-	
-	
-	
+	@RequestMapping(value = "/shareDownload/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+	public String downloadPDFFile(@RequestParam String filename) throws IOException {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		NVaultUser user = (NVaultUser) auth.getPrincipal();
+		filename = filename;
+		System.out.println(filename);
+		String userBucket = user.getUsername().toLowerCase() + "" + user.getId();
+		System.out.println(userBucket);
+		AmazonS3 s3Client = new AmazonS3Client(
+				new BasicAWSCredentials(env.getProperty("accessKey"), env.getProperty("securityKey")));
+
+		S3Object object = s3Client.getObject(new GetObjectRequest(userBucket + "/home", filename));
+
+		String bucketName = userBucket;
+		String objectKey = object.getKey();
+
+		java.util.Date expiration = new java.util.Date();
+
+		GeneratePresignedUrlRequest generateUrl = new GeneratePresignedUrlRequest(bucketName, "home/" + objectKey);
+
+		generateUrl.setMethod(HttpMethod.GET); // Default.
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new java.util.Date());
+		cal.add(Calendar.DATE, 2);
+
+		generateUrl.setExpiration(cal.getTime());
+
+		// AmazonS3 s3Client;
+		URL url = s3Client.generatePresignedUrl(generateUrl);
+
+		return url.toString();
+	}
+
 }
