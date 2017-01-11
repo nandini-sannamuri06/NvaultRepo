@@ -173,7 +173,7 @@ public class S3BucketController {
 				resultMap.put(fileName, "Not SuccessFully Moved to" + folderName);
 			}
 		}
-		return new ResponseEntity<HashMap<String, String>>(resultMap, HttpStatus.OK);
+		return new ResponseEntity<HashMap<String, String>>(resultMap, HttpStatus.CREATED);
 	}
 
 	/**
@@ -332,36 +332,23 @@ public class S3BucketController {
 
 	@RequestMapping(value = "/shareDownload/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
 	public String downloadPDFFile(@RequestParam String filename) throws IOException {
-
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
-		filename = filename;
 		System.out.println(filename);
 		String userBucket = user.getUsername().toLowerCase() + "" + user.getId();
 		System.out.println(userBucket);
 		AmazonS3 s3Client = new AmazonS3Client(
 				new BasicAWSCredentials(env.getProperty("accessKey"), env.getProperty("securityKey")));
-
 		S3Object object = s3Client.getObject(new GetObjectRequest(userBucket + "/home", filename));
-
 		String bucketName = userBucket;
 		String objectKey = object.getKey();
-
-		java.util.Date expiration = new java.util.Date();
-
 		GeneratePresignedUrlRequest generateUrl = new GeneratePresignedUrlRequest(bucketName, "home/" + objectKey);
-
 		generateUrl.setMethod(HttpMethod.GET); // Default.
-
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new java.util.Date());
 		cal.add(Calendar.DATE, 2);
-
 		generateUrl.setExpiration(cal.getTime());
-
-		// AmazonS3 s3Client;
 		URL url = s3Client.generatePresignedUrl(generateUrl);
-
 		return url.toString();
 	}
 
