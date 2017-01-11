@@ -1,0 +1,29 @@
+<div align="center" ng-controller="FolderCtrl">
+	<div class="panel panel-default" style="width:550px;height:200px;">
+			<div class="panel-heading" style="height:50px">
+			<center><h4><span style="color:black;">New Folder</span></h4></center>
+			</div>
+  			<div class="panel-body" style="background-color: #F8F8F8 ">
+  			
+				<form name="form">  			
+  				<div class="row" style="padding-bottom: 5px;">
+					<div align="left" class="control-group">
+			
+						<div class="col-md-2"><label class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;Folder Name: <b class="mandatory-field">*</b></label></div>
+						<div class="col-md-2" class="col-xs-2">
+								<input class="naga-text-box-custom" style="width:150px!important" type="text" ng-model="folderName"  id="name" required>
+                        </div>
+					</div> 
+					</div>
+				<div class="row" style="padding-bottom: 5px;">
+					<div align="right" class="control-group">
+						<div class="col-md-1"></div>
+						<div class="col-md-2"></div>
+						<div class="col-md-3"><button type="button" class="btn btn-primary" ng-click="save(folderName)" ng-disabled="form.$invalid">SAVE</button></div> 
+						<div class="col-md-2"><button type="button" class="btn btn-primary" ng-click="cancel()">CANCEL</button></div>
+					</div>
+				</div>
+				</form>
+			</div>
+	</div>
+</div>

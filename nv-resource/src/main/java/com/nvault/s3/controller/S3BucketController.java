@@ -84,7 +84,7 @@ public class S3BucketController {
 	 */
 	@RequestMapping(value = "/fetchDocs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	// Need to write logic for fetching the Folders.
-	public ResponseEntity<List<UserDocDVO>> getDocs(@RequestParam("folderName") String folderName) {
+	public ResponseEntity<List<List<UserDocDVO>>> getDocs(@RequestParam("folderName") String folderName) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
 		S3Bucket bucket = bucketService.findByuserName(user.getUsername());
@@ -94,7 +94,9 @@ public class S3BucketController {
 		ListObjectsRequest listObjectsRequest = new ListObjectsRequest().withBucketName(bucket.getBucketName())
 				.withPrefix(folderName + "/");
 		ObjectListing objects = s3Client.listObjects(listObjectsRequest);
-		List<UserDocDVO> userDocs = new ArrayList<UserDocDVO>();
+		List<UserDocDVO> filesList = new ArrayList<UserDocDVO>();
+		List<UserDocDVO> foldersList = new ArrayList<UserDocDVO>();
+		List<List<UserDocDVO>> allList = new ArrayList<List<UserDocDVO>>();
 		List<S3ObjectSummary> list = objects.getObjectSummaries();
 		List<S3Folder> listFolders = bucketService.listAllFolders(folderName + "/");
 		for (S3ObjectSummary summary : list) {
@@ -104,17 +106,19 @@ public class S3BucketController {
 				userDocDVO.setModifiedDate(summary.getLastModified());
 				userDocDVO.setSize(summary.getSize() / 1024);
 				userDocDVO.setFileType("file");
-				userDocs.add(userDocDVO);
+				filesList.add(userDocDVO);
 			}
 		}
 		for (S3Folder s3Folder : listFolders) {
 			UserDocDVO userDocDVO = new UserDocDVO();
 			userDocDVO.setFileName(s3Folder.getFolderName());
 			userDocDVO.setFileType("folder");
-			userDocs.add(userDocDVO);
+			foldersList.add(userDocDVO);
 		}
-		System.out.println("userDocs" + userDocs);
-		return new ResponseEntity<List<UserDocDVO>>(userDocs, HttpStatus.CREATED);
+		allList.add(0, foldersList);
+		allList.add(1, filesList);
+		System.out.println("userDocs" + allList);
+		return new ResponseEntity<List<List<UserDocDVO>>>(allList, HttpStatus.CREATED);
 	}
 
 	/**
@@ -138,6 +142,7 @@ public class S3BucketController {
 				meta.setContentLength(f.getSize());
 				s3Client.putObject(bucket.getBucketName(), "home/" + f.getOriginalFilename(), stream, meta);
 				return new ResponseEntity<String>("File Uploaded SuccessFully", HttpStatus.CREATED);
+				
 			} catch (Exception e) {
 				System.out.println("Exception occured in uploading file" + e.getMessage());
 				return new ResponseEntity<String>("File is not Uploaded", HttpStatus.BAD_REQUEST);
@@ -159,21 +164,21 @@ public class S3BucketController {
 	 * @return This is used to move the docs from one folder to trash/archive.
 	 */
 	@RequestMapping(value = "/updateDocs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<HashMap<String, String>> updateDocs(@RequestParam("fileNames") List<String> fileNames,
+	public ResponseEntity<List<String>> updateDocs(@RequestParam("fileNames") List<String> fileNames,
 			@RequestParam("folderName") String folderName) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		NVaultUser user = (NVaultUser) auth.getPrincipal();
 		S3Bucket bucket = bucketService.findByuserName(user.getUsername());
-		HashMap<String, String> resultMap = new HashMap<String, String>();
+		List<String> resultMap = new ArrayList<String>();
 		for (String fileName : fileNames) {
 			String status = deletionProcess(fileName, bucket.getBucketName(), folderName);
 			if ("success".equalsIgnoreCase(status)) {
-				resultMap.put(fileName, "SuccessFully Moved to" + folderName);
+				resultMap.add(fileName+" SuccessFully Moved to " + folderName+" \n");
 			} else {
-				resultMap.put(fileName, "Not SuccessFully Moved to" + folderName);
+				resultMap.add(fileName+" Not SuccessFully Moved to " + folderName+" \n");
 			}
 		}
-		return new ResponseEntity<HashMap<String, String>>(resultMap, HttpStatus.CREATED);
+		return new ResponseEntity<List<String>>(resultMap, HttpStatus.CREATED);
 	}
 
 	/**

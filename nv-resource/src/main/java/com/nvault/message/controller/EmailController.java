@@ -37,12 +37,8 @@ public class EmailController {
 		pwdDetails.setExpired(0);
 		pwdDtlsService.savePwdDtls(pwdDetails);
 		//this should make it as asynchronous.
-		String result = emailSenderUtil.sendMail(message);
-		if("success".equals(result)){
-		return new ResponseEntity<String>(result,HttpStatus.OK);
-		}else{
-			return new ResponseEntity<String>(result,HttpStatus.BAD_REQUEST);
-		}
+		emailSenderUtil.sendMail(message);
+		return new ResponseEntity<String>("success",HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/shareMail", method= RequestMethod.POST ,produces = MediaType.TEXT_HTML_VALUE)

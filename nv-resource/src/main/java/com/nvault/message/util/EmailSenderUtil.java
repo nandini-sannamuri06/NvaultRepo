@@ -1,12 +1,8 @@
 package com.nvault.message.util;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.velocity.Template;
@@ -15,14 +11,11 @@ import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.nvault.controller.EmailToAddress;
-import com.nvault.controller.Mail;
-import com.nvault.message.controller.SmtpMailController;
 import com.nvault.message.model.Message;
 import com.nvault.message.service.MessageService;
 import com.nvault.model.NVaultUser;
@@ -38,6 +31,12 @@ public class EmailSenderUtil {
 	@Autowired
 	public VelocityEngine velocityEngine;
 
+	/**
+	 * @param message
+	 * Send Mail Asynchronously.
+	 * @return
+	 */
+	@Async
 	public String sendMail(Message message) {
 		String status = "success";
 		try {
@@ -55,8 +54,10 @@ public class EmailSenderUtil {
 				template.merge(context, writter);
 			messageHelper.setText(writter.toString(), true);
 			mailSender.send(mimeMessage);
+			/*Need to insert Success Message in DB*/
 		} catch (Exception e) {
 			status = "failure";
+			/*Need to insert Failure Message in DB*/
 		}
 		return status;
 	}

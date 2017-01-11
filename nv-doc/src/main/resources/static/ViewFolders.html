@@ -85,8 +85,6 @@ ul {
 
 <body>
 	<div class="container" ng-controller="DocsCtrl">
-		<link rel='stylesheet prefetch'
-			href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
 		<div class="mail-box" align="left"
 		style="width: 850px; position: relative; top: 35px; height: 50">
 			<aside class="sm-side" >
@@ -105,15 +103,17 @@ ul {
 								Upload</a></li>
 					</ul>
 				</div>
-				<!-- <a href ng-click="myvalue = !myvalue">Toggle Cats</a> -->
-				<div class="btn-group">
-						<a class="btn mini btn-primary" href="ViewFolders.html"><span> Home</span>
-						</a>
-					</div>
 				<div class="btn-group">
 						<a class="btn mini btn-primary" ng-click="createFolder()"><span> New Folder</span>
 						</a>
-					</div>
+				</div>
+				<div class="btn-group" ng-repeat=" folderName in folderData" style="font: smaller; margin:left">
+					  <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                      <div class="col-sm-4">
+					  <a class="btn mini btn-primary" id="a1" ng-href="ViewFolders.html"> {{folderName.fileName}} </a> 
+					   </div>
+				</div>
+					
 				<div class="inbox-body text-center grdOptionBtns" style="display: none;">
 					<div class="btn-group">
 						<a class="btn mini btn-info"  ng-click="trash()"><span>Move to Trash</span>
@@ -135,19 +135,15 @@ ul {
 
 			</aside>
 			<aside class="lg-side">
-				<div class="inbox-head">
-					<h3>Home Docs</h3>
-				</div>
-				<div class="inbox-body">
-					<div ng-controller="DocsCtrl as vm" >
+				 <div ng-controller="DocsCtrl as vm" >
 						<br />
-						<div id="serviceGrid" ui-grid-move-columns ui-grid-pagination
+						<div id="filesGrid" ui-grid-move-columns ui-grid-pagination
 							ui-grid-selection ui-grid-resize-columns ui-grid-pinning
 							ui-grid-exporter ui-grid-auto-resize ui-grid-pagination
-							ui-grid-edit ui-grid="vm.serviceGrid" class="influxGrid"
+							ui-grid-edit ui-grid="vm.filesGrid" class="influxGrid"
 							style="height: 300px;"></div>
 					</div>
-				</div>
+			
 			</aside>
 		</div>
 		
@@ -176,8 +172,6 @@ ul {
 							upload</div>
 						<div ngf-no-file-drop>File Drag/Drop is not supported for
 							this browser</div>
-						
-
 						<div ng-show="ShowFilesProgress">
 						Files:
 							<ul>

@@ -2,6 +2,7 @@
 var app = angular.module('Docs', ['ngAnimate', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.bootstrap', 'ui.grid.edit','ui.grid.pagination','ngFileUpload' ])
 
 app.controller('DocsCtrl', DocsCtrl);
+app.controller('FolderCtrl', FolderCtrl);
 //Upload UI
 
 app
@@ -125,8 +126,8 @@ app
 
     ]);
 var seleIndex ='';
-DocsCtrl.$inject = [ '$scope', '$http', '$filter', '$modal', 'uiGridConstants' ];
-function DocsCtrl($scope, $http, $filter,$modal, uiGridConstants) {
+DocsCtrl.$inject = [ '$scope', '$http', '$modal', 'uiGridConstants' ];
+function DocsCtrl($scope, $http, $modal, uiGridConstants) {
 	
 	var vm = this;
 	$scope.showdata =true;
@@ -170,27 +171,80 @@ function DocsCtrl($scope, $http, $filter,$modal, uiGridConstants) {
 		displayName : 'ModifiedDate',
 		enableSorting : true,
 		enableCellEdit : false,
-	},{
-		name : 'Download',
-		cellTemplate : '<button type="button" class="glyphicon glyphicon-floppy-save" ng-click="grid.appScope.d(row.entity)"></button> '
 	}
 	];
+	
+	vm.filesGrid = {
+			enableRowSelection : true,
+			enableRowHeaderSelection : false,
+			multiSelect : false,
+			enableSorting : true,
+			paginationPageSizes: [25, 50, 75, 100],
+			paginationPageSize: 25,
+			onRegisterApi: function(gridApi) {
+			    $scope.gridApi = gridApi;
+			    $scope.mySelectedRows = $scope.gridApi.selection.getSelectedRows();
+			    gridApi.selection.on.rowSelectionChanged($scope, function(row) {
+			        var msg = row.entity.fileName;
+			        seleIndex = msg;
+			        $('div.grdOptionBtns').css('display','block');
+			    });
+//			    rowTemplate: '<div ng-click="myvalue = !myvalue" ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid" class="ui-grid-cell" ng-class="col.colIndex()" ui-grid-cell></div>',
+//			    rowTemplate: '<div ng-click="myvalue = !myvalue"></div>',
+//			    if($scope.mySelectedRows.length>0){
+//			    	$scope.myvalue = true; 
+//			    }
+			}
+
+			//rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
+		};
+		vm.filesGrid.columnDefs = [ {
+			field : 'fileName',
+			displayName : 'File Name',
+			enableSorting : true,
+			enableCellEdit : false
+		}, {
+			field : 'size',
+			displayName : 'Size',
+			enableSorting : true,
+			enableCellEdit : false,
+//			cellTemplate:'<button class="btn primary" ng-click="grid.appScope.showMe()" >Click Me</button>'
+		},{
+			field : 'modifiedDate',
+			displayName : 'ModifiedDate',
+			enableSorting : true,
+			enableCellEdit : false,
+		}
+		];
 
 
 	$http.get('/resource/fetchDocs',{params:{folderName:'home'}}).success(function(response) {
 		vm.serviceGrid.data = response;
-		$scope.docs = response;
-	}).error(function(response) {
+		vm.filesGrid.data = response[1];
+		$scope.folderData = response[0];
+		
+	  }).error(function(response) {
+		$log.error(response);
 	})
 	
-	$scope.refreshData = function() {
-		vm.serviceGrid.data = $filter('filter')($scope.docs, $scope.searchHomeDocs, undefined);
-	}
-	
-	
 	$scope.createFolder = function() {
-		alert(seleIndex);
+		$modal.open({
+			templateUrl : 'createFolder.html',
+			controllerAs : 'vm',
+		});
 		
+	},
+//	
+//	$scope.viewFolders = function() {
+//		$modal.open({
+//			templateUrl : 'ViewFolders.html',
+//			controllerAs : 'vm',
+//		});
+//		
+//	},
+	
+	$scope.HomeFolder = function() {
+		alert("home");
 	},
 	$scope.archive = function() {
 		var fileNameValue = seleIndex;
@@ -218,14 +272,24 @@ function DocsCtrl($scope, $http, $filter,$modal, uiGridConstants) {
 		}
 		
 	}
-	$scope.Download = function() {
-		var fileNameValue = seleIndex;
-		if(fileNameValue==''){
-			alert('Please select a file for downloading');
-		}else{
-			window.location.assign('/resource/downloadDoc?fileName='+fileNameValue+'&folderName=home');
-		}
-		
-	}
+}
+FolderCtrl.$inject = [ '$scope', '$http', '$modal'];
+function FolderCtrl($scope, $http, $modal) {
+	
+                 $scope.cancel = function() {
+                	 console.log("cancle");
+                 }
+                 $scope.save = function(folderName) {
+                	 console.log("folderName");
+                	 $http.post('/resource/createFolder',{
+		    			 'baseFolderName':'',
+		    			 'newFolderName': folderName
+		    		 }).success(function(response) {
+                			vm.serviceGrid.data = response;
+                		}).error(function(response) {
+                			$log.error(response);
+                		})
+                	 console.log("save");
+                 }
 }
 
