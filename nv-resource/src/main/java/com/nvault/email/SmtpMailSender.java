@@ -1,6 +1,7 @@
 package com.nvault.email;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,8 @@ public class SmtpMailSender {
 			}
 			
 			helper.setText(body,true);
+			helper.setFrom(new InternetAddress("Sender Name" + "<" + "donotreply@netlokfamily.com" + ">"));
+
 
 			javaMailSender.send(message);
 			

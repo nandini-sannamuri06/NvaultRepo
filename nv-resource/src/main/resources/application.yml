@@ -21,9 +21,9 @@ spring:
             dialect : org.hibernate.dialect.MySQL5Dialect 
     mail:
       mail:
-      host: smtp.gmail.com
-      username: nsuggula@nisum.com
-      password: xxxxxx
+      host: mx2.collectivemail.net
+      username: donotreply@netlokfamily.com
+      password: (0Nn3ctm3
       properties:
                     mail:
                       smtp:
